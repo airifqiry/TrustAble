@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS confidence_thresholds CASCADE;
 DROP TABLE IF EXISTS phone_risk_signals CASCADE;
 DROP TABLE IF EXISTS scam_patterns CASCADE;
 
@@ -9,6 +10,7 @@ CREATE TABLE scam_patterns (
   example      TEXT,
   source       VARCHAR(100) NOT NULL DEFAULT 'manual',
   confidence   INTEGER      NOT NULL DEFAULT 80 CHECK (confidence BETWEEN 0 AND 100),
+  verified     BOOLEAN      NOT NULL DEFAULT FALSE,
   active       BOOLEAN      NOT NULL DEFAULT TRUE,
   created_at   TIMESTAMPTZ  NOT NULL DEFAULT NOW(),
   updated_at   TIMESTAMPTZ  NOT NULL DEFAULT NOW()
@@ -37,6 +39,15 @@ CREATE TABLE phone_risk_signals (
 CREATE INDEX idx_phone_prefix
   ON phone_risk_signals (prefix)
   WHERE active = TRUE;
+
+CREATE TABLE confidence_thresholds (
+  id          SERIAL PRIMARY KEY,
+  label       VARCHAR(50)  NOT NULL,
+  emoji       VARCHAR(10)  NOT NULL,
+  min_score   INTEGER      NOT NULL,
+  max_score   INTEGER      NOT NULL,
+  message     TEXT         NOT NULL
+);
 
 CREATE OR REPLACE FUNCTION update_updated_at()
 RETURNS TRIGGER AS $$
