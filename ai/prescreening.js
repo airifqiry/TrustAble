@@ -38,8 +38,16 @@ function hasSuspiciousSubdomain(domain = '') {
 }
 
 function hasRandomCharacterDomain(domain = '') {
-  const cleanedDomain = domain.replace(/\./g, '');
-  return /[a-z0-9]{12,}/i.test(cleanedDomain);
+  const baseDomain = domain.replace(/^www\./, '').split('.')[0];
+
+  if (!baseDomain || baseDomain.length < 12) {
+    return false;
+  }
+
+  const hasManyNumbers = (baseDomain.match(/\d/g) || []).length >= 3;
+  const hasLongMixedSequence = /[a-z]+\d+[a-z0-9]*|\d+[a-z]+[a-z0-9]*/i.test(baseDomain);
+
+  return hasManyNumbers || hasLongMixedSequence;
 }
 
 function hasCharacterSubstitution(domain = '') {
@@ -55,10 +63,6 @@ function inferCategory({ contentType = '', platform = '', matchedSignals = [] })
     return 'Phone Scam';
   }
 
-  if (platform === 'olx' || platform === 'ebay' || platform === 'facebook') {
-    return 'Marketplace Scam';
-  }
-
   if (
     matchedSignals.includes('known_bad_domain') ||
     matchedSignals.includes('suspicious_tld') ||
@@ -67,10 +71,18 @@ function inferCategory({ contentType = '', platform = '', matchedSignals = [] })
     return 'Phishing';
   }
 
+  if (platform === 'olx' || platform === 'ebay' || platform === 'facebook') {
+    return 'Marketplace Scam';
+  }
+
   return 'General Scam';
 }
 
-function buildExplanation({ matchedSignals = [], category = 'General Scam' }) {
+function buildExplanation({ matchedSignals = [], category = 'General Scam', score = 0 }) {
+  if (score === 0) {
+    return DEFAULT_EXPLANATIONS.safe;
+  }
+
   if (matchedSignals.includes('known_bad_domain')) {
     return 'This domain was flagged as a known phishing or scam-related domain.';
   }
@@ -190,6 +202,7 @@ export async function runPreScreening({
   const explanation = buildExplanation({
     matchedSignals,
     category,
+    score,
   });
 
   const result = calculateConfidence({
