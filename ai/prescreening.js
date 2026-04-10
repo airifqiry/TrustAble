@@ -7,6 +7,7 @@ import {
 import { scorePatternMatches } from './patternScorer.js';
 import { calculateConfidence } from './confidenceFormula.js';
 import { getDomainAge } from './domainAge.js';
+import { detectObfuscation } from './antievasion.js';
 
 function normalizeText(text = '') {
   return text.toLowerCase().replace(/\s+/g, ' ').trim();
@@ -119,11 +120,16 @@ export async function runPreScreening({
   const breakdown = {
     url: 0,
     domainAge: 0,
+    obfuscation: 0,
     pattern: 0,
   };
 
   const matchedSignals = [];
   let knownBadDomain = false;
+
+  const obfuscationResult = detectObfuscation(normalizedText);
+  breakdown.obfuscation = obfuscationResult.score;
+  matchedSignals.push(...obfuscationResult.matchedSignals);
 
   if (domain) {
     if (hasSuspiciousTld(domain)) {
@@ -183,7 +189,7 @@ export async function runPreScreening({
 
   const prescreeningScore = Math.min(
     100,
-    breakdown.url + breakdown.domainAge
+    breakdown.url + breakdown.domainAge + breakdown.obfuscation
   );
 
   const patternScore = breakdown.pattern;
