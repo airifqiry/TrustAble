@@ -4,6 +4,7 @@ import {
   HYBRID_MIN_CONTRIBUTION,
   RISK_LEVELS,
   SOURCES,
+  DEFAULT_EXPLANATIONS,
 } from './constants.js';
 import { applyOverrideLogic } from './overrideLogic.js';
 
@@ -76,7 +77,7 @@ export function calculateConfidence({
   return {
     riskLevel,
     confidence,
-    explanation: override.explanation || explanation,
+    explanation: override.explanation || explanation || DEFAULT_EXPLANATIONS.safe,
     category: override.category || category,
     source: getSource({
       skipClaude,
