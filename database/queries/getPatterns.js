@@ -1,4 +1,4 @@
-const { pool } = require('../db');
+import { pool } from '../db.js';
 
 async function getPatterns(category, region = 'global', limit = 5) {
   const { rows } = await pool.query(
@@ -38,4 +38,4 @@ async function getPatternsByCategories(categories, region = 'global', limitPerCa
   return rows;
 }
 
-module.exports = { getPatterns, getPatternsByCategories };
+export { getPatterns, getPatternsByCategories };

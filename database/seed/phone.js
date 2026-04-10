@@ -1,5 +1,5 @@
-const { pool }            = require('../db');
-const { bulkAddPatterns } = require('../queries/addPattern');
+import { pool } from '../db.js';
+import { bulkAddPatterns } from '../queries/addPattern.js';
 
 const phoneRiskSignals = [
   // Bulgaria
@@ -111,4 +111,4 @@ async function seed() {
   console.log(`[Seed] phone: ${signalCount} risk signals + ${patternCount} conversation patterns inserted`);
 }
 
-module.exports = { seed };
+export { seed };

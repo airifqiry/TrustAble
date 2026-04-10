@@ -1,5 +1,4 @@
-
-const { pool } = require('../db');
+import { pool } from '../db.js';
 
 const thresholds = [
   {
@@ -56,4 +55,4 @@ async function seed() {
   console.log(`[Seed] thresholds: ${count} confidence tiers inserted`);
 }
 
-module.exports = { seed };
+export { seed };

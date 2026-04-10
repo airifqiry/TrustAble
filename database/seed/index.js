@@ -1,11 +1,12 @@
-require('dotenv').config({ path: '../.env' });
+import dotenv from 'dotenv';
+import { testConnection } from '../db.js';
+import { seed as seedMarketplace } from './marketplace.js';
+import { seed as seedPhone } from './phone.js';
+import { seed as seedPhishing } from './phishing.js';
+import { seed as seedGeneral } from './general.js';
+import { seed as seedThresholds } from './thresholds.js';
 
-const { testConnection }          = require('../db');
-const { seed: seedMarketplace }   = require('./marketplace');
-const { seed: seedPhone }         = require('./phone');
-const { seed: seedPhishing }      = require('./phishing');
-const { seed: seedGeneral }       = require('./general');
-const { seed: seedThresholds }    = require('./thresholds');
+dotenv.config();
 
 async function runAllSeeders() {
   console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');

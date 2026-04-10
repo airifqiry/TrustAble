@@ -1,4 +1,5 @@
-const { Pool } = require('pg');
+import pkg from 'pg';
+const { Pool } = pkg;
 
 if (!process.env.DATABASE_URL) {
   throw new Error('DATABASE_URL environment variable is not set. Check your .env file.');
@@ -28,4 +29,4 @@ async function testConnection() {
   }
 }
 
-module.exports = { pool, testConnection };
+export { pool, testConnection };

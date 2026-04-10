@@ -1,4 +1,4 @@
-const { pool } = require('../db');
+import { pool } from '../db.js';
 
 async function addPattern({ category, region = 'global', pattern_text, example, source = 'manual', confidence = 80, verified = false }) {
   if (!category || !pattern_text) {
@@ -59,4 +59,4 @@ async function deactivatePattern(id) {
   return rowCount > 0;
 }
 
-module.exports = { addPattern, bulkAddPatterns, deactivatePattern };
+export { addPattern, bulkAddPatterns, deactivatePattern };

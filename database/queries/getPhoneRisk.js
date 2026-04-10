@@ -1,4 +1,4 @@
-const { pool } = require('../db');
+import { pool } from '../db.js';
 
 async function getPhoneRisk(phoneNumber) {
   const normalized = phoneNumber.replace(/[\s\-().]/g, '');
@@ -41,4 +41,4 @@ async function getHighRiskPrefixesByRegion(region) {
   return rows;
 }
 
-module.exports = { getPhoneRisk, getHighRiskPrefixesByRegion };
+export { getPhoneRisk, getHighRiskPrefixesByRegion };

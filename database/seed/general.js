@@ -1,4 +1,4 @@
-const { bulkAddPatterns } = require('../queries/addPattern');
+import { bulkAddPatterns } from '../queries/addPattern.js';
 
 const patterns = [
   {
@@ -56,4 +56,4 @@ async function seed() {
   console.log(`[Seed] general/message: ${count} new patterns inserted`);
 }
 
-module.exports = { seed };
+export { seed };
