@@ -21,7 +21,7 @@
  *   'email'       → ['phishing', 'message']
  */
 
-import { getPatternsByCategories } from '../../database/index.js';
+import { getPatternsByCategories } from '../database/index.js';
 
 // Simple TTL cache  { cacheKey: { patterns: [], expiresAt: Number } }
 const cache    = new Map();

@@ -50,25 +50,6 @@ export async function handlePage(req, res) {
   const platform = hintPlatform || detectPlatform(url);
   const region   = req.body.region || 'global'; // Extension can pass region hint
 
-  // ── Pre-screening (Anna's layer) ────────────────────────────────────────────
-  // Fast rule-based check before spending Claude API tokens.
-  // If score is high enough, skip Claude entirely.
-  let preScreen;
-  try {
-    preScreen = await runPreScreening({ text, url, contentType: 'page', platform });
-  } catch (err) {
-    console.warn('[Page] Pre-screening failed, continuing to Claude:', err.message);
-    preScreen = { score: 0, skipClaude: false };
-  }
-
-  if (preScreen.skipClaude) {
-    return res.json({
-      verdict:    preScreen.verdict,
-      confidence: preScreen.score,
-      source:     'prescreening',
-    });
-  }
-
   // ── RAG retrieval ───────────────────────────────────────────────────────────
   let patterns = [];
   try {
@@ -76,6 +57,26 @@ export async function handlePage(req, res) {
   } catch (err) {
     console.warn('[Page] RAG fetch failed, continuing without patterns:', err.message);
   }
+
+  // ── Pre-screening ────────────────────────────────────────────
+  let preScreen;
+  try {
+    preScreen = await runPreScreening({
+      text,
+      url,
+      contentType: 'page',
+      platform,
+      patterns,
+    });
+  } catch (err) {
+    console.warn('[Page] Pre-screening failed, continuing to Claude:', err.message);
+    preScreen = { score: 0, skipClaude: false };
+  }
+
+  if (preScreen.skipClaude) {
+    return res.json(preScreen.result);
+  }
+
 
   // ── Stream Claude analysis ──────────────────────────────────────────────────
   initSSE(res);

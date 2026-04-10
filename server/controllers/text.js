@@ -28,23 +28,6 @@ export async function handleText(req, res) {
     });
   }
 
-  // ── Pre-screening ───────────────────────────────────────────────────────────
-  let preScreen;
-  try {
-    preScreen = await runPreScreening({ text: content, contentType: 'message' });
-  } catch (err) {
-    console.warn('[Text] Pre-screening failed, continuing to Claude:', err.message);
-    preScreen = { score: 0, skipClaude: false };
-  }
-
-  if (preScreen.skipClaude) {
-    return res.json({
-      verdict:    preScreen.verdict,
-      confidence: preScreen.score,
-      source:     'prescreening',
-    });
-  }
-
   // ── RAG retrieval ───────────────────────────────────────────────────────────
   let patterns = [];
   try {
@@ -52,6 +35,24 @@ export async function handleText(req, res) {
   } catch (err) {
     console.warn('[Text] RAG fetch failed, continuing without patterns:', err.message);
   }
+
+  // ── Pre-screening ───────────────────────────────────────────────────────────
+  let preScreen;
+  try {
+    preScreen = await runPreScreening({
+      text: content,
+      contentType: 'message',
+      patterns,
+    });
+  } catch (err) {
+    console.warn('[Text] Pre-screening failed, continuing to Claude:', err.message);
+    preScreen = { score: 0, skipClaude: false };
+  }
+
+  if (preScreen.skipClaude) {
+    return res.json(preScreen.result);
+  }
+
 
   // ── Stream Claude analysis ──────────────────────────────────────────────────
   initSSE(res);

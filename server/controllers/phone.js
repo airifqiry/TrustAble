@@ -129,10 +129,13 @@ export async function handlePhone(req, res) {
     console.warn('[Phone] Metadata lookup error:', apiMeta.reason?.message);
   }
 
-  // ── Anna's phone metadata scoring ──────────────────────────────────────────
   let metadataScore = 0;
+  let metadataSignals = [];
+
   try {
-    metadataScore = await scorePhoneMetadata({ metadata, dbSignal });
+    const metadataResult = await scorePhoneMetadata({ metadata, dbSignal });
+    metadataScore = metadataResult.score;
+    metadataSignals = metadataResult.matchedSignals;
   } catch (err) {
     console.warn('[Phone] Metadata scoring failed:', err.message);
   }
@@ -169,6 +172,7 @@ export async function handlePhone(req, res) {
     metadata:      metadata || {},
     dbSignal:      dbSignal || null,
     metadataScore,
+    metadataSignals,
   });
 
   try {
