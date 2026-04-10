@@ -54,6 +54,31 @@ export function calculateConfidence({
   category = null,
   explanation = '',
 }) {
+  if (skipClaude) {
+    const score = clampScore(prescreeningScore + patternScore);
+
+    const override = applyOverrideLogic({
+      score,
+      knownBadDomain,
+      knownScamPrefix,
+      category,
+      explanation,
+    });
+
+    const confidence = clampScore(override.score);
+    const riskLevel = override.overridden
+      ? override.riskLevel
+      : getRiskLevel(confidence);
+
+    return {
+      riskLevel,
+      confidence,
+      explanation: override.explanation || explanation || DEFAULT_EXPLANATIONS.safe,
+      category: override.category || category,
+      source: SOURCES.prescreening,
+    };
+  }
+
   const rawScore =
     prescreeningScore * WEIGHTS.prescreening +
     patternScore * WEIGHTS.patternScore +
