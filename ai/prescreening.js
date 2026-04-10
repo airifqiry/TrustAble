@@ -8,6 +8,7 @@ import { scorePatternMatches } from './patternScorer.js';
 import { calculateConfidence } from './confidenceFormula.js';
 import { getDomainAge } from './domainAge.js';
 import { detectObfuscation } from './antievasion.js';
+import { scoreMarketplaceSignals } from './marketplaceScorer.js';
 
 function normalizeText(text = '') {
   return text.toLowerCase().replace(/\s+/g, ' ').trim();
@@ -121,6 +122,7 @@ export async function runPreScreening({
     url: 0,
     domainAge: 0,
     obfuscation: 0,
+    marketplace: 0,
     pattern: 0,
   };
 
@@ -130,6 +132,15 @@ export async function runPreScreening({
   const obfuscationResult = detectObfuscation(normalizedText);
   breakdown.obfuscation = obfuscationResult.score;
   matchedSignals.push(...obfuscationResult.matchedSignals);
+
+  const marketplaceResult =
+    platform === 'olx' || platform === 'ebay' || platform === 'facebook'
+      ? scoreMarketplaceSignals(normalizedText)
+      : { score: 0, matchedSignals: [] };
+
+  breakdown.marketplace = marketplaceResult.score;
+  matchedSignals.push(...marketplaceResult.matchedSignals);
+
 
   if (domain) {
     if (hasSuspiciousTld(domain)) {
@@ -189,7 +200,10 @@ export async function runPreScreening({
 
   const prescreeningScore = Math.min(
     100,
-    breakdown.url + breakdown.domainAge + breakdown.obfuscation
+    breakdown.url +
+    breakdown.domainAge +
+    breakdown.obfuscation +
+    breakdown.marketplace
   );
 
   const patternScore = breakdown.pattern;
