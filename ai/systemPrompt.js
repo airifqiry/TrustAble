@@ -1,4 +1,4 @@
-// ai/systemPrompt.js
+
 
 export const systemPrompt = `
 You are a scam detection expert. Your only job is to analyze 
