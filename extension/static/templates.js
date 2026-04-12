@@ -374,7 +374,7 @@ async function runPhone() {
   const btn        = document.getElementById('phone-btn');
   const loading    = document.getElementById('phone-loading');
   const transcript = consentGiven ? document.getElementById('transcript-input').value.trim() : '';
-  const phone      = document.getElementById('country-sel').value + num;
+  const phone = num.startsWith('+') ? num : '+' + num;
 
   btn.disabled = true;
   document.getElementById('phone-result').className = 'result';

@@ -142,16 +142,29 @@ export async function handlePhone(req, res) {
 
   // ── If no transcript: return metadata-only verdict (no streaming needed) ────
   if (!transcript || transcript.trim().length < 10) {
+    const riskLevel = metadataScore >= 70 ? 'Likely Scam'
+                    : metadataScore >= 45 ? 'Suspicious'
+                    : metadataScore >= 20 ? 'Uncertain'
+                    : 'Appears Safe';
+  
+    const explanation = metadataScore >= 70
+      ? 'This number shows strong risk signals from metadata analysis including line type and carrier information.'
+      : metadataScore >= 45
+      ? 'This number shows some suspicious signals. Exercise caution before engaging.'
+      : metadataScore >= 20
+      ? 'This number shows minor risk signals. No transcript was provided for deeper analysis.'
+      : 'No strong risk signals detected from this number metadata.';
+  
     return res.json({
-      phone:         normalizedPhone,
-      metadata:      metadata || {},
-      dbSignal:      dbSignal || null,
+      riskLevel,
+      confidence:  metadataScore,
+      explanation,
+      category:    'Phone Check',
+      source:      'metadata_only',
+      phone:       normalizedPhone,
+      metadata:    metadata || {},
+      dbSignal:    dbSignal || null,
       metadataScore,
-      verdict:       metadataScore >= 70 ? 'likely_scam'
-                   : metadataScore >= 45 ? 'suspicious'
-                   : metadataScore >= 20 ? 'uncertain'
-                   : 'safe',
-      source: 'metadata_only',
     });
   }
 
