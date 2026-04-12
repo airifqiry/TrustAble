@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>TrustAble</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="static/templates.css" />
+</head>
+<body>
+
+<div class="popup-shell">
+<!-- HEADER -->
+<div class="header">
+  <div class="logo">Trust<span>Able</span></div>
+  <div class="shield-dot"></div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab active" onclick="switchTab(0)">Scan This Page</button>
+  <button class="tab" onclick="switchTab(1)">Paste &amp; Check</button>
+  <button class="tab" onclick="switchTab(2)">Phone Check</button>
+</div>
+
+<!-- ══════════ TAB 1: SCAN ══════════ -->
+<div class="panel active" id="tab-0">
+
+  <div class="scan-url-bar">
+    <div class="url-dot live"></div>
+    <span class="url-text" id="current-url">Loading…</span>
+  </div>
+
+  <button class="btn-scan" id="scan-btn" onclick="runScan()">
+    <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+    </svg>
+    Scan This Page
+  </button>
+
+  <div class="loading" id="scan-loading">
+    <div class="spinner"></div>
+    <span class="loading-text">Reading page<span class="loading-dots"></span></span>
+  </div>
+
+  <div class="result" id="scan-result">
+    <div class="result-header">
+      <span class="risk-pill" id="scan-pill"></span>
+      <span class="category-badge" id="scan-cat"></span>
+    </div>
+    <div class="result-body">
+      <p class="result-body-text" id="scan-text"></p>
+      <div class="conf-section">
+        <div class="conf-row">
+          <span class="conf-label">Confidence</span>
+          <span class="conf-pct" id="scan-pct"></span>
+        </div>
+        <div class="conf-bar">
+          <div class="conf-fill" id="scan-bar" style="width:0%"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button class="btn-rescan" id="rescan-btn" style="display:none" onclick="runRescan()">
+    <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/>
+    </svg>
+    Re-scan page
+  </button>
+
+</div>
+
+<!-- ══════════ TAB 2: PASTE ══════════ -->
+<div class="panel" id="tab-1">
+
+  <textarea
+    class="paste-area"
+    id="paste-input"
+    placeholder="Paste any suspicious message, email, social DM, link, or SMS here…"
+    oninput="onPasteInput()"
+  ></textarea>
+
+  <div class="char-row">
+    <span class="char-warn" id="char-warn">
+      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      Approaching Claude's context limit
+    </span>
+    <span class="char-count" id="char-count">0 / 180,000</span>
+  </div>
+
+  <button class="btn-scan" id="paste-btn" onclick="runPaste()" disabled>
+    <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+    </svg>
+    Analyze
+  </button>
+
+  <div class="loading" id="paste-loading">
+    <div class="spinner"></div>
+    <span class="loading-text">Analyzing<span class="loading-dots"></span></span>
+  </div>
+
+  <div class="result" id="paste-result">
+    <div class="result-header">
+      <span class="risk-pill" id="paste-pill"></span>
+      <span class="category-badge" id="paste-cat"></span>
+    </div>
+    <div class="result-body">
+      <p class="result-body-text" id="paste-text"></p>
+      <div class="conf-section">
+        <div class="conf-row">
+          <span class="conf-label">Confidence</span>
+          <span class="conf-pct" id="paste-pct"></span>
+        </div>
+        <div class="conf-bar">
+          <div class="conf-fill" id="paste-bar" style="width:0%"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════ TAB 3: PHONE ══════════ -->
+<div class="panel" id="tab-2">
+
+  <div class="phone-input-row">
+    <select class="country-select" id="country-sel">
+      <option value="+359">🇧🇬 +359</option>
+      <option value="+1">🇺🇸 +1</option>
+      <option value="+44">🇬🇧 +44</option>
+      <option value="+49">🇩🇪 +49</option>
+      <option value="+33">🇫🇷 +33</option>
+      <option value="+39">🇮🇹 +39</option>
+      <option value="+34">🇪🇸 +34</option>
+      <option value="+31">🇳🇱 +31</option>
+      <option value="+30">🇬🇷 +30</option>
+      <option value="+7">🇷🇺 +7</option>
+      <option value="+86">🇨🇳 +86</option>
+      <option value="+91">🇮🇳 +91</option>
+    </select>
+    <input
+      class="phone-input"
+      type="tel"
+      id="phone-input"
+      placeholder="87 123 4567"
+      oninput="onPhoneInput()"
+    />
+  </div>
+
+  <!-- Transcript toggle -->
+  <div class="transcript-toggle" onclick="toggleTranscript()">
+    <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" color="var(--text2)">
+      <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+    </svg>
+    <span class="toggle-label">Add conversation transcript <span style="color:var(--text3);font-size:0.7rem">(optional)</span></span>
+    <span class="toggle-arrow" id="toggle-arrow">▼</span>
+  </div>
+
+  <div class="transcript-wrap" id="transcript-wrap">
+    <div class="consent-box">
+      <div class="consent-check" id="consent-check" onclick="toggleConsent()"></div>
+      <div class="consent-text">
+        <strong>Consent required.</strong> By checking this box you confirm you have the right to share this conversation for analysis. Content is analyzed and immediately discarded — never stored.
+      </div>
+    </div>
+    <textarea
+      class="paste-area"
+      id="transcript-input"
+      placeholder="Paste the conversation here…"
+      style="height:80px;margin-bottom:8px"
+      disabled
+    ></textarea>
+  </div>
+
+  <button class="btn-scan" id="phone-btn" onclick="runPhone()" disabled>
+    <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.68A2 2 0 012 .82h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/>
+    </svg>
+    Check Number
+  </button>
+
+  <div class="loading" id="phone-loading">
+    <div class="spinner"></div>
+    <span class="loading-text">Checking number<span class="loading-dots"></span></span>
+  </div>
+
+  <!-- Metadata -->
+  <div class="meta-grid" id="phone-meta" style="display:none">
+    <div class="meta-cell">
+      <div class="meta-lbl">Country</div>
+      <div class="meta-val" id="meta-country">—</div>
+    </div>
+    <div class="meta-cell">
+      <div class="meta-lbl">Line type</div>
+      <div class="meta-val" id="meta-line">—</div>
+    </div>
+    <div class="meta-cell">
+      <div class="meta-lbl">Carrier</div>
+      <div class="meta-val" id="meta-carrier">—</div>
+    </div>
+    <div class="meta-cell">
+      <div class="meta-lbl">Risk score</div>
+      <div class="meta-val" id="meta-risk">—</div>
+    </div>
+  </div>
+
+  <div class="result" id="phone-result">
+    <div class="result-header">
+      <span class="risk-pill" id="phone-pill"></span>
+      <span class="category-badge" id="phone-cat"></span>
+    </div>
+    <div class="result-body">
+      <p class="result-body-text" id="phone-text"></p>
+      <div class="conf-section">
+        <div class="conf-row">
+          <span class="conf-label">Confidence</span>
+          <span class="conf-pct" id="phone-pct"></span>
+        </div>
+        <div class="conf-bar">
+          <div class="conf-fill" id="phone-bar" style="width:0%"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <span class="footer-brand">TrustAble</span>
+  <span class="footer-status">
+    <span class="status-dot"></span>
+    AI connected
+  </span>
+</div>
+
+</div><!-- /popup-shell -->
+
+<script src="static/templates.js"></script>
+</body>
+</html>

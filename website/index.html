@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>TrustAble — Rely On TrustAble</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="static/homepage.css" />
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-brand" onclick="go('home')">TrustAble</span>
+  <div class="nav-links">
+    <button class="nav-link active" data-page="home" onclick="go('home')">Home</button>
+    <button class="nav-link" data-page="features" onclick="go('features')">Features</button>
+    <button class="nav-link" data-page="extension" onclick="go('extension')">Extension</button>
+    <button class="nav-link" data-page="install" onclick="go('install')">Install</button>
+    <button class="nav-link nav-cta" onclick="go('install')">Add to Chrome</button>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════════ HOME ══ -->
+<div class="page active" id="pg-home">
+
+  <div class="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-badge"><i></i> AI-Powered Scam Detection</div>
+    <p class="eyebrow">Rely On</p>
+    <h1 class="hero-title">TrustAble</h1>
+    <p class="hero-sub">A Chrome extension that scans pages and messages for scams, phishing, and suspicious content — powered by AI.</p>
+    <div style="display:flex;gap:.75rem;flex-wrap:wrap;justify-content:center">
+      <button class="btn btn-p" onclick="go('install')">
+        <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download Extension
+      </button>
+      <button class="btn btn-s" onclick="go('features')">Learn More</button>
+    </div>
+    <p style="font-size:.75rem;color:var(--text3);margin-top:1rem">Works on Chrome, Edge, Brave, Arc &amp; all Chromium browsers</p>
+    <div class="hero-trust">
+      <div class="trust-item"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>No data sold</div>
+      <div class="trust-item"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>No account needed</div>
+      <div class="trust-item"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Open source</div>
+      <div class="trust-item"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Designed for all ages</div>
+    </div>
+  </div>
+
+  <hr class="div"/>
+
+  <!-- WHAT IT DOES -->
+  <section>
+    <div class="container">
+      <p class="eyebrow">What it does</p>
+      <h2 class="section-title">Protection you can trust</h2>
+      <p class="section-sub" style="margin-top:.75rem">Whether browsing a marketplace, reading an email, or got a suspicious text — TrustAble has you covered.</p>
+      <div class="grid-2" style="margin-top:3rem">
+        <div class="cell">
+          <div class="card-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg></div>
+          <h3 style="font-size:1rem;font-weight:500;margin-bottom:.4rem">Scan This Page</h3>
+          <p style="font-size:.83rem;color:var(--text2);line-height:1.65">One-click scan of any page. Strips noise, extracts meaningful content, and sends it for AI analysis with platform-aware context.</p>
+        </div>
+        <div class="cell">
+          <div class="card-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="M9 12h6m-3-3v6M9 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V5a2 2 0 00-2-2h-2M9 3a2 2 0 002 2h2a2 2 0 002-2M9 3a2 2 0 012-2h2a2 2 0 012 2"/></svg></div>
+          <h3 style="font-size:1rem;font-weight:500;margin-bottom:.4rem">Paste &amp; Check</h3>
+          <p style="font-size:.83rem;color:var(--text2);line-height:1.65">Paste any suspicious message, email, DM, or SMS. Get instant AI-powered analysis with streaming results.</p>
+        </div>
+        <div class="cell">
+          <div class="card-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg></div>
+          <h3 style="font-size:1rem;font-weight:500;margin-bottom:.4rem">Platform Detection</h3>
+          <p style="font-size:.83rem;color:var(--text2);line-height:1.65">Automatically detects OLX, eBay, Gmail, Facebook, WhatsApp — selecting the correct analysis template.</p>
+        </div>
+        <div class="cell">
+          <div class="card-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+          <h3 style="font-size:1rem;font-weight:500;margin-bottom:.4rem">Streaming Results</h3>
+          <p style="font-size:.83rem;color:var(--text2);line-height:1.65">See analysis appear word-by-word in real-time. Re-scan for dynamic pages that load content late.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="div"/>
+
+  <!-- LIVE DEMO -->
+  <section>
+    <div class="container">
+      <p class="eyebrow">See it in action</p>
+      <h2 class="section-title">Real-time scam detection</h2>
+      <div class="demo-split">
+        <div>
+          <p style="font-size:.7rem;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.8rem">Suspicious message</p>
+          <div class="demo-msg">
+            <div class="sender">Unknown · +1 (555) 019-2847</div>
+            Congratulations! You've been selected for a <span class="hl">$1,000 Amazon gift card</span>. Click here to <span class="hl">claim now</span> before it expires: <span class="hl">amzn-promo.co/abc123</span>
+          </div>
+          <p style="font-size:.7rem;color:var(--text3)">Highlighted: suspicious patterns detected</p>
+        </div>
+        <div>
+          <p style="font-size:.7rem;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.8rem">TrustAble Analysis</p>
+          <div class="result-panel">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.7rem">
+              <span class="risk-badge danger">⛔ Likely Scam</span>
+              <span style="font-size:.7rem;color:var(--text3)">Phishing</span>
+            </div>
+            <p class="result-text">Fake prize lure with urgency trigger and a non-Amazon domain designed to steal personal information or payment details.</p>
+            <div style="margin-top:.9rem">
+              <div style="display:flex;justify-content:space-between;font-size:.7rem;margin-bottom:.3rem"><span style="color:var(--text3)">Confidence</span><span style="color:#F09090">94%</span></div>
+              <div class="conf-bar"><div class="conf-fill" style="width:94%;background:#D94545"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="div"/>
+
+  <section style="text-align:center">
+    <div class="container">
+      <p class="eyebrow">Get protected</p>
+      <h2 class="section-title" style="max-width:460px;margin:0 auto .9rem">Start protecting yourself today</h2>
+      <p style="color:var(--text2);font-size:.9rem;max-width:380px;margin:0 auto 2rem;line-height:1.7">Free to use. No account required. Works instantly after installation.</p>
+      <button class="btn btn-p" onclick="go('install')">
+        <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download Free Extension
+      </button>
+    </div>
+  </section>
+
+  <footer>
+    <p class="footer-logo">TrustAble</p>
+    <p><a href="#" onclick="go('home')">Home</a> &nbsp;·&nbsp; <a href="#" onclick="go('features')">Features</a> &nbsp;·&nbsp; <a href="#" onclick="go('extension')">Extension</a> &nbsp;·&nbsp; <a href="#" onclick="go('install')">Install</a></p>
+  </footer>
+</div>
+
+<!-- ══════════════════════════════════════════ FEATURES ══ -->
+<div class="page" id="pg-features">
+
+  <section style="padding-top:5rem;text-align:center">
+    <div class="container">
+      <p class="eyebrow">Everything included</p>
+      <h1 class="section-title">Built for real protection</h1>
+      <p class="section-sub" style="margin:.75rem auto 0">Three scanning modes, designed to be fast, clear, and accessible to everyone.</p>
+      <div class="feat-tabs">
+        <button class="feat-tab active" onclick="featTab(0)">Scan Page</button>
+        <button class="feat-tab" onclick="featTab(1)">Paste &amp; Check</button>
+        <button class="feat-tab" onclick="featTab(2)">Phone Check</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- PANEL 0 -->
+  <div class="feat-panel active" id="fp-0">
+    <div class="container">
+      <div class="two-col">
+        <div class="feat-visual">
+          <p style="font-size:.68rem;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.9rem">Scanning: ebay.com/itm/987654</p>
+          <div style="display:flex;align-items:center;gap:.7rem;margin-bottom:1.2rem">
+            <div style="flex:1;height:4px;background:var(--bg4);border-radius:100px;overflow:hidden"><div style="width:72%;height:100%;background:var(--coral);border-radius:100px"></div></div>
+            <span style="font-size:.72rem;color:var(--text3)">72%</span>
+          </div>
+          <div class="result-panel">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.65rem">
+              <span class="risk-badge warn">⚠ Suspicious</span>
+              <span style="font-size:.7rem;color:var(--text3)">Overpayment</span>
+            </div>
+            <p class="result-text">Seller requests payment via wire transfer outside the platform and pressures buyer to act quickly. Classic overpayment pattern.</p>
+          </div>
+        </div>
+        <div class="feat-detail">
+          <h3>One-click page scan</h3>
+          <p>Click the TrustAble icon and hit Scan — the extension reads the entire page, strips clutter, and sends only meaningful content for AI analysis.</p>
+          <ul class="bullet">
+            <li>Extracts clean readable text from the page</li>
+            <li>Strips ads, navigation, and boilerplate</li>
+            <li>Passes current URL for platform context</li>
+            <li>Selects the right template (eBay, OLX, Gmail…)</li>
+            <li>Re-scan button for delayed content loading</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL 1 -->
+  <div class="feat-panel" id="fp-1">
+    <div class="container">
+      <div class="two-col">
+        <div class="feat-visual">
+          <p style="font-size:.68rem;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.75rem">Paste suspicious content</p>
+          <div style="background:var(--bg);border:.5px solid var(--border);border-radius:8px;padding:.8rem 1rem;font-size:.8rem;color:var(--text2);line-height:1.55;margin-bottom:.6rem">"URGENT: Your Netflix account will be suspended in 24 hours unless you verify your billing info at netflix-secure-update.net"</div>
+          <p style="text-align:right;font-size:.68rem;color:var(--text3)">324 / 4000 characters</p>
+          <div class="result-panel" style="margin-top:.7rem">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.65rem">
+              <span class="risk-badge danger">⛔ Likely Scam</span>
+              <span style="font-size:.7rem;color:var(--text3)">Phishing</span>
+            </div>
+            <p class="result-text">Fake urgency with a spoofed domain targeting Netflix credentials. Do not click the link.</p>
+          </div>
+        </div>
+        <div class="feat-detail">
+          <h3>Paste any suspicious content</h3>
+          <p>Got a text, DM, email, or social media message that feels off? Paste it in and TrustAble analyzes it in seconds.</p>
+          <ul class="bullet">
+            <li>Accepts messages, emails, DMs, links, SMS</li>
+            <li>Character count indicator near context limit</li>
+            <li>Streaming results appear word by word</li>
+            <li>Scam category badge (Phishing, Impersonation…)</li>
+            <li>Confidence score shown as a visual bar</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL 2 -->
+  <div class="feat-panel" id="fp-2">
+    <div class="container">
+      <div class="two-col">
+        <div class="feat-visual">
+          <p style="font-size:.68rem;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.75rem">Phone number check</p>
+          <div style="background:var(--bg);border:.5px solid var(--border);border-radius:8px;padding:.7rem .9rem;font-size:.82rem;color:var(--text);display:flex;gap:.5rem;align-items:center;margin-bottom:.65rem"><span>🇧🇬</span><span style="color:var(--text2)">+359</span><span>87 123 4567</span></div>
+          <div class="phone-meta">
+            <div class="meta-box"><div class="meta-lbl">Country</div><div class="meta-val">Bulgaria</div></div>
+            <div class="meta-box"><div class="meta-lbl">Line type</div><div class="meta-val" style="color:var(--warn)">VoIP</div></div>
+            <div class="meta-box"><div class="meta-lbl">Carrier</div><div class="meta-val">Unknown</div></div>
+            <div class="meta-box"><div class="meta-lbl">Risk score</div><div class="meta-val" style="color:var(--warn)">67/100</div></div>
+          </div>
+        </div>
+        <div class="feat-detail">
+          <h3>Phone number intelligence</h3>
+          <p>Enter any number and optionally paste a transcript. TrustAble combines metadata with AI analysis for a full picture.</p>
+          <ul class="bullet">
+            <li>International format support (+359, +44, +1…)</li>
+            <li>Country, carrier type, and line type metadata</li>
+            <li>Optional transcript paste with consent disclaimer</li>
+            <li>Unified verdict combining phone score + conversation</li>
+            <li>Designed for elderly and non-technical users</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="div" style="margin-top:1rem"/>
+
+  <!-- RESULT DISPLAY -->
+  <section>
+    <div class="container">
+      <p class="eyebrow">Universal result display</p>
+      <h2 class="section-title">Results designed for everyone</h2>
+      <div class="cards" style="margin-top:2.5rem">
+        <div class="card">
+          <div style="display:flex;gap:.45rem;flex-wrap:wrap;margin-bottom:1rem">
+            <span class="risk-badge safe">✓ Appears Safe</span>
+            <span class="risk-badge warn">⚠ Suspicious</span>
+            <span class="risk-badge danger">⛔ Likely Scam</span>
+            <span class="risk-badge uncertain">? Uncertain</span>
+          </div>
+          <h3>4-level risk system</h3>
+          <p>Clear color-coded verdicts so you instantly know how to react — no technical knowledge needed.</p>
+        </div>
+        <div class="card">
+          <div style="font-size:.82rem;color:var(--text2);line-height:1.7;margin-bottom:1rem">
+            This message shows classic signs of <span style="color:var(--coral)">urgency manipulation</span> combined with an unofficial domain...<span class="cursor-blink"></span>
+          </div>
+          <h3>Streaming explanation</h3>
+          <p>Results stream word-by-word — so you're reading as fast as the AI is thinking.</p>
+        </div>
+        <div class="card">
+          <div style="margin-bottom:1rem">
+            <div style="display:flex;justify-content:space-between;font-size:.72rem;margin-bottom:.3rem"><span style="color:var(--text3)">Confidence</span><span style="color:#F09090">94%</span></div>
+            <div class="conf-bar"><div class="conf-fill" style="width:94%;background:#D94545"></div></div>
+          </div>
+          <h3>Confidence score</h3>
+          <p>Visual bar showing how certain the AI is — so you know when to act and when to investigate further.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p class="footer-logo">TrustAble</p>
+    <p><a href="#" onclick="go('home')">Home</a> &nbsp;·&nbsp; <a href="#" onclick="go('features')">Features</a> &nbsp;·&nbsp; <a href="#" onclick="go('extension')">Extension</a> &nbsp;·&nbsp; <a href="#" onclick="go('install')">Install</a></p>
+  </footer>
+</div>
+
+<!-- ══════════════════════════════════════════ EXTENSION ══ -->
+<div class="page" id="pg-extension">
+
+  <section style="padding-top:5rem;text-align:center">
+    <div class="container">
+      <p class="eyebrow">The extension</p>
+      <h1 class="section-title">See the popup UI</h1>
+      <p class="section-sub" style="margin:.75rem auto 0">Exactly what you'll see when you click the TrustAble icon. Click through each tab below.</p>
+    </div>
+  </section>
+
+  <section style="padding-top:1rem">
+    <div class="container">
+      <div class="popup-showcase">
+
+        <!-- INTERACTIVE POPUP -->
+        <div>
+          <p style="font-size:.7rem;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;text-align:center;margin-bottom:1rem">Interactive demo</p>
+          <div class="ext-popup">
+            <div class="ext-header">
+              <div class="ext-logo">TrustAble</div>
+              <div class="ext-tabs">
+                <button class="ext-tab active" onclick="extTab(0)">Scan Page</button>
+                <button class="ext-tab" onclick="extTab(1)">Paste &amp; Check</button>
+                <button class="ext-tab" onclick="extTab(2)">Phone Check</button>
+              </div>
+            </div>
+            <div class="ext-body">
+
+              <div class="ext-panel active" id="ep-0">
+                <button class="ext-btn" onclick="demoScan()">
+                  <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg>
+                  Scan This Page
+                </button>
+                <button class="ext-btn-s" onclick="demoScan()">↺ Re-scan</button>
+                <div class="ext-res" id="sr" style="display:none">
+                  <div class="ext-resrow">
+                    <span class="risk-badge warn" style="font-size:.7rem;padding:.22rem .6rem">⚠ Suspicious</span>
+                    <span style="font-size:.66rem;color:var(--text3)">Overpayment</span>
+                  </div>
+                  <p class="ext-restext" id="sr-txt"></p>
+                  <div class="ext-barlbl"><span>Confidence</span><span style="color:#F5C56A">78%</span></div>
+                  <div class="conf-bar"><div class="conf-fill" style="width:78%;background:var(--warn)"></div></div>
+                </div>
+              </div>
+
+              <div class="ext-panel" id="ep-1">
+                <textarea class="ext-ta" placeholder="Paste suspicious message, email, DM, or SMS…" id="pa-inp" oninput="paChar()"></textarea>
+                <div class="ext-charlbl"><span id="pa-ct">0</span> / 4000</div>
+                <button class="ext-btn" onclick="demoPaste()">
+                  <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                  Analyze
+                </button>
+                <div class="ext-res" id="pr" style="display:none">
+                  <div class="ext-resrow">
+                    <span class="risk-badge danger" style="font-size:.7rem;padding:.22rem .6rem">⛔ Likely Scam</span>
+                    <span style="font-size:.66rem;color:var(--text3)">Phishing</span>
+                  </div>
+                  <p class="ext-restext" id="pr-txt"></p>
+                  <div class="ext-barlbl"><span>Confidence</span><span style="color:#F09090">92%</span></div>
+                  <div class="conf-bar"><div class="conf-fill" style="width:92%;background:#D94545"></div></div>
+                </div>
+              </div>
+
+              <div class="ext-panel" id="ep-2">
+                <div class="ext-phonerow">
+                  <select class="ext-sel">
+                    <option>🇧🇬 +359</option><option>🇬🇧 +44</option><option>🇺🇸 +1</option><option>🇩🇪 +49</option>
+                  </select>
+                  <input class="ext-inp" type="text" placeholder="87 123 4567"/>
+                </div>
+                <button class="ext-btn" onclick="demoPhone()">
+                  <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.68A2 2 0 012 .82h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+                  Check Number
+                </button>
+                <div id="ph-res" style="display:none">
+                  <div class="ext-meta">
+                    <div class="ext-mc"><div class="ext-ml">Country</div><div class="ext-mv">Bulgaria</div></div>
+                    <div class="ext-mc"><div class="ext-ml">Line type</div><div class="ext-mv" style="color:var(--warn)">VoIP</div></div>
+                    <div class="ext-mc"><div class="ext-ml">Carrier</div><div class="ext-mv">Unknown</div></div>
+                    <div class="ext-mc"><div class="ext-ml">Risk score</div><div class="ext-mv" style="color:var(--warn)">67/100</div></div>
+                  </div>
+                  <div class="ext-res">
+                    <div class="ext-resrow"><span class="risk-badge warn" style="font-size:.7rem;padding:.22rem .6rem">⚠ Suspicious</span></div>
+                    <p class="ext-restext">VoIP number with unknown carrier. This may be a spoofed or temporary number — exercise caution.</p>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- DESCRIPTION -->
+        <div style="max-width:360px">
+          <p class="eyebrow">Under the hood</p>
+          <h2 class="section-title" style="font-size:1.9rem;margin-bottom:1.25rem">How the extension works</h2>
+          <div class="tech-cards" style="grid-template-columns:1fr">
+            <div class="card" style="padding:1.25rem">
+              <h3 style="margin-bottom:.3rem">Popup UI</h3>
+              <p>Tabs, streaming results, loading states, and character counter — the interface you interact with.</p>
+            </div>
+            <div class="card" style="padding:1.25rem">
+              <h3 style="margin-bottom:.3rem">Content extractor</h3>
+              <p>Strips noise from pages, pulls out clean readable text, and detects which platform you're on.</p>
+            </div>
+            <div class="card" style="padding:1.25rem">
+              <h3 style="margin-bottom:.3rem">Background service</h3>
+              <p>Coordinates communication between the UI and the API — routes requests and handles responses.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p class="footer-logo">TrustAble</p>
+    <p><a href="#" onclick="go('home')">Home</a> &nbsp;·&nbsp; <a href="#" onclick="go('features')">Features</a> &nbsp;·&nbsp; <a href="#" onclick="go('extension')">Extension</a> &nbsp;·&nbsp; <a href="#" onclick="go('install')">Install</a></p>
+  </footer>
+</div>
+
+<!-- ══════════════════════════════════════════ INSTALL ══ -->
+<div class="page" id="pg-install">
+
+  <section style="padding-top:5rem;text-align:center">
+    <div class="container">
+      <p class="eyebrow">Free &amp; open source</p>
+      <h1 class="hero-title" style="font-size:clamp(2.5rem,6vw,5rem)">Download TrustAble</h1>
+      <p class="hero-sub" style="margin:1rem auto 2rem">Install in 60 seconds. No account. No credit card. Just protection.</p>
+      <div class="dl-card" style="text-align:left">
+        <div class="v-pill">
+          <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          Latest release · v1.0.0
+        </div>
+        <h3 style="font-size:1.05rem;font-weight:500;margin-bottom:.5rem">TrustAble Extension</h3>
+        <p style="font-size:.85rem;color:var(--text2);line-height:1.65;margin-bottom:1.5rem">Download the .zip, then follow the 4-step installation below. Works on any Chromium-based browser.</p>
+        <div style="display:flex;gap:.7rem;flex-wrap:wrap">
+          <button class="btn btn-p">
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download .zip
+          </button>
+          <button class="btn btn-s">
+            <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+            View on GitHub
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="div"/>
+
+  <section>
+    <div class="container">
+      <p class="eyebrow">Installation</p>
+      <h2 class="section-title">How to install</h2>
+      <p class="section-sub" style="margin-top:.75rem">Manual installation takes about 60 seconds. You only need to do this once.</p>
+      <div class="install-grid">
+        <div class="install-card">
+          <div class="install-num">1</div>
+          <h4>Download and unzip</h4>
+          <p>Download the <code>.zip</code> above and unzip it to a folder you'll remember — like your Desktop.</p>
+        </div>
+        <div class="install-card">
+          <div class="install-num">2</div>
+          <h4>Open extensions page</h4>
+          <p>Type <code>chrome://extensions</code> into the address bar and press Enter.</p>
+        </div>
+        <div class="install-card">
+          <div class="install-num">3</div>
+          <h4>Enable Developer Mode</h4>
+          <p>Toggle on "Developer mode" in the top-right corner of the extensions page.</p>
+        </div>
+        <div class="install-card">
+          <div class="install-num">4</div>
+          <h4>Load Unpacked</h4>
+          <p>Click "Load unpacked" and select the <code>extension/</code> folder. TrustAble appears in your toolbar.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="div"/>
+
+  <section>
+    <div class="container">
+      <p class="eyebrow">Privacy first</p>
+      <h2 class="section-title">What we do — and don't — collect</h2>
+      <p class="section-sub" style="margin-top:.75rem">We built TrustAble to protect you, not monitor you.</p>
+      <div class="privacy-grid">
+        <div class="priv-item">
+          <div class="priv-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div><h4>Text analyzed, not stored</h4><p>Content is sent for analysis and immediately discarded. Nothing is logged on our servers.</p></div>
+        </div>
+        <div class="priv-item">
+          <div class="priv-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div><h4>No account required</h4><p>We never ask for your email, name, or any personal information. Works anonymously from install.</p></div>
+        </div>
+        <div class="priv-item">
+          <div class="priv-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div><h4>No data sold</h4><p>We do not sell, share, or monetize your data in any form. Our business doesn't depend on your information.</p></div>
+        </div>
+        <div class="priv-item">
+          <div class="priv-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div><h4>Open source code</h4><p>Every line of code is on GitHub. Read and verify exactly what it does before installing.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="div"/>
+
+  <section>
+    <div class="container" style="max-width:680px">
+      <p class="eyebrow">FAQ</p>
+      <h2 class="section-title">Common questions</h2>
+      <div class="steps-list" style="margin-top:2rem">
+        <div class="step-item">
+          <div class="step-content"><h4>Does it work on mobile?</h4><p>TrustAble is a desktop browser extension. Mobile browser extensions aren't yet supported on most mobile browsers.</p></div>
+        </div>
+        <div class="step-item">
+          <div class="step-content"><h4>Does it scan pages automatically?</h4><p>No — it only scans when you click the icon and choose to scan. It never runs in the background or monitors your browsing.</p></div>
+        </div>
+        <div class="step-item">
+          <div class="step-content"><h4>What AI does it use?</h4><p>TrustAble uses Claude by Anthropic to analyze content. Results are streamed back in real time.</p></div>
+        </div>
+        <div class="step-item">
+          <div class="step-content"><h4>Is it free?</h4><p>Yes — free to download and use. No hidden fees, subscriptions, or premium tiers.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p class="footer-logo">TrustAble</p>
+    <p><a href="#" onclick="go('home')">Home</a> &nbsp;·&nbsp; <a href="#" onclick="go('features')">Features</a> &nbsp;·&nbsp; <a href="#" onclick="go('extension')">Extension</a> &nbsp;·&nbsp; <a href="#" onclick="go('install')">Install</a></p>
+  </footer>
+</div>
+
+<script src="static/homepage.js"></script>
+</body>
+</html>
