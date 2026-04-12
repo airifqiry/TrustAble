@@ -10,7 +10,7 @@
  */
 
 const WINDOW_MS   = 24 * 60 * 60 * 1000; // 24 hours
-const FREE_LIMIT  = 10;                   // requests per window
+const FREE_LIMIT  = 100000;                   // requests per window
 
 // { ip: { count: Number, resetAt: Number } }
 const store = new Map();

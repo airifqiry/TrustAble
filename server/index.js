@@ -1,17 +1,21 @@
 import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
 import { testConnection } from '../database/index.js';
 import { rateLimiter }   from './middleware/rateLimiter.js';
 import { authenticate }  from './middleware/authenticate.js';
 import { sanitize }      from './middleware/sanitize.js';
 import analyzeRoutes     from './routes/analyze.js';
 
+const __dirname = dirname(fileURLToPath(import.meta.url));
 const app  = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(cors({ origin: '*', allowedHeaders: ['Content-Type', 'Authorization'] }));
 app.use(express.json({ limit: '50kb' }));
+app.use(express.static(join(__dirname, '../website')));
 
 app.use(rateLimiter);
 app.use(authenticate);
