@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "TrustAble",
+  "version": "1.0.0",
+  "description": "AI-powered scam and fraud detection for web pages, messages, and phone numbers.",
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "TrustAble"
+  },
+  "permissions": [
+    "activeTab",
+    "scripting"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ]
+}

@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import express from 'express';
+import cors from 'cors';
 import { testConnection } from '../database/index.js';
 import { rateLimiter }   from './middleware/rateLimiter.js';
 import { authenticate }  from './middleware/authenticate.js';
@@ -9,13 +10,12 @@ import analyzeRoutes     from './routes/analyze.js';
 const app  = express();
 const PORT = process.env.PORT || 3000;
 
-// ── Body parsing ──────────────────────────────────────────────────────────────
-app.use(express.json({ limit: '50kb' })); // hard cap before sanitize runs
+app.use(cors({ origin: '*', allowedHeaders: ['Content-Type', 'Authorization'] }));
+app.use(express.json({ limit: '50kb' }));
 
-// ── Global middleware ─────────────────────────────────────────────────────────
-app.use(rateLimiter);    // IP-based rate limiting (free tier: 10 req/day)
-app.use(authenticate);   // Signed API key check
-app.use(sanitize);       // Strip injection chars from body strings
+app.use(rateLimiter);
+app.use(authenticate);
+app.use(sanitize);
 
 // ── Routes ────────────────────────────────────────────────────────────────────
 app.use('/analyze', analyzeRoutes);

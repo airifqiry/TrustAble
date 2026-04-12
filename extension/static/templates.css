@@ -48,7 +48,7 @@ body{
   padding:2rem 1rem;
 }
 
-/* card wrapper — scales up on bigger screens */
+
 .popup-shell{
   width:100%;
   max-width:560px;
@@ -60,7 +60,7 @@ body{
   font-size:1rem;
 }
 
-/* scale up internals on larger screens */
+
 @media(min-width:600px){
   .popup-shell{ font-size:1.08rem; }
   .header{ padding:20px 24px 18px; }
@@ -101,7 +101,7 @@ body{
   .popup-shell{border-radius:0;min-height:100vh;border:none;box-shadow:none}
 }
 
-/* ── HEADER ── */
+
 .header{
   display:flex;
   align-items:center;
@@ -162,12 +162,12 @@ body{
 .tab:hover{color:var(--text2)}
 .tab.active{color:var(--text);border-bottom-color:var(--coral)}
 
-/* ── PANELS ── */
+
 .panel{display:none;padding:14px 14px 16px;animation:slideIn .22s ease}
 .panel.active{display:block}
 @keyframes slideIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 
-/* ── SCAN TAB ── */
+
 .scan-url-bar{
   display:flex;
   align-items:center;
@@ -244,7 +244,7 @@ body{
 }
 .btn-rescan:hover{border-color:var(--border3);color:var(--text);background:var(--surface2)}
 
-/* ── LOADING STATE ── */
+
 .loading{
   display:none;
   flex-direction:column;
@@ -268,7 +268,7 @@ body{
 }
 @keyframes dots{0%{content:''}25%{content:'.'}50%{content:'..'}75%{content:'...'}100%{content:''}}
 
-/* ── RESULT PANEL ── */
+
 .result{
   display:none;
   margin-top:12px;
@@ -298,7 +298,7 @@ body{
   min-height:40px;
 }
 
-/* risk states */
+
 .result.safe{background:var(--safe-bg);border-color:var(--safe-border)}
 .result.warn{background:var(--warn-bg);border-color:var(--warn-border)}
 .result.danger{background:var(--danger-bg);border-color:var(--danger-border)}
@@ -353,11 +353,11 @@ body{
 .conf-fill.warn{background:var(--warn-text)}
 .conf-fill.danger{background:var(--danger-text)}
 
-/* cursor blink */
+
 .cursor{display:inline-block;width:2px;height:.9em;background:var(--coral);margin-left:1px;vertical-align:text-bottom;animation:blink .9s step-end infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 
-/* ── PASTE TAB ── */
+
 .paste-area{
   width:100%;
   background:var(--surface2);
@@ -397,7 +397,7 @@ body{
 .char-count.warn{color:var(--warn-text)}
 .char-count.critical{color:var(--danger-text)}
 
-/* ── PHONE TAB ── */
+
 .phone-input-row{
   display:flex;
   gap:6px;
@@ -485,7 +485,7 @@ body{
 .consent-text{font-size:0.72rem;color:var(--text2);line-height:1.5}
 .consent-text strong{color:var(--warn-text);font-weight:500}
 
-/* phone metadata */
+
 .meta-grid{
   display:grid;
   grid-template-columns:1fr 1fr;
@@ -505,10 +505,10 @@ body{
 .meta-val.mobile{color:var(--safe-text)}
 .meta-val.landline{color:var(--text2)}
 
-/* ── DIVIDER ── */
+
 .divider{border:none;border-top:0.5px solid var(--border);margin:12px 0}
 
-/* ── FOOTER ── */
+
 .footer{
   padding:8px 14px 10px;
   border-top:0.5px solid var(--border);
@@ -521,7 +521,7 @@ body{
 .footer-status{font-size:0.66rem;color:var(--text3);display:flex;align-items:center;gap:4px}
 .status-dot{width:5px;height:5px;border-radius:50%;background:var(--safe-text)}
 
-/* ── SCROLLBAR ── */
+
 ::-webkit-scrollbar{width:4px}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:10px}

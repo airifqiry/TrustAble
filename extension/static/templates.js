@@ -1,15 +1,11 @@
-// ── CONFIG ────────────────────────────────────────────────────────────────────
-// IMPORTANT: This must match SHIELD_API_KEY in your .env file exactly
-const SHIELD_API_KEY = 'shieldai-dev-key-2024';
+const SHIELD_API_KEY = 'trustable123';
 const SERVER_URL = 'http://localhost:3000';
 
-// ── TAB SWITCHING ──────────────────────────────────────────────────────────────
 function switchTab(i) {
   document.querySelectorAll('.tab').forEach((t,j) => t.classList.toggle('active', i===j));
   document.querySelectorAll('.panel').forEach((p,j) => p.classList.toggle('active', i===j));
 }
 
-// ── STREAM TEXT (typing animation) ────────────────────────────────────────────
 function streamText(el, text, speed, onDone) {
   el.innerHTML = '';
   let i = 0;
@@ -27,10 +23,7 @@ function streamText(el, text, speed, onDone) {
   }, speed || 16);
 }
 
-// ── PARSE SSE STREAM ──────────────────────────────────────────────────────────
-// The server sends Server-Sent Events: data: {"type":"token","text":"..."}
-// This function reads the stream and calls onToken for each text chunk,
-// and onDone when the stream finishes with the final metadata.
+
 async function readSSEStream(response, onToken, onDone, onError) {
   const reader = response.body.getReader();
   const decoder = new TextDecoder();
@@ -44,7 +37,7 @@ async function readSSEStream(response, onToken, onDone, onError) {
 
       buffer += decoder.decode(value, { stream: true });
       const lines = buffer.split('\n');
-      buffer = lines.pop(); // keep incomplete line in buffer
+      buffer = lines.pop(); 
 
       for (const line of lines) {
         if (!line.startsWith('data: ')) continue;
@@ -68,11 +61,11 @@ async function readSSEStream(response, onToken, onDone, onError) {
           }
 
           if (event.type === 'metadata') {
-            // Phone tab metadata frame — handled separately in runPhone
+            
             if (onDone._metaCallback) onDone._metaCallback(event);
           }
         } catch {
-          // Non-JSON line, skip
+       
         }
       }
     }
@@ -81,12 +74,7 @@ async function readSSEStream(response, onToken, onDone, onError) {
   }
 }
 
-// ── PARSE CLAUDE PLAIN TEXT RESPONSE ─────────────────────────────────────────
-// Claude returns:
-//   Risk Level: Likely Scam
-//   Confidence: 87
-//   Explanation: ...
-//   Category: Phishing
+
 function parseClaudeText(text) {
   const extract = (label) => {
     const regex = new RegExp(label + '\\s*(.+)', 'i');
@@ -110,7 +98,7 @@ function parseClaudeText(text) {
   return { risk, riskRaw, confidence, explanation, category };
 }
 
-// ── SHOW RESULT ───────────────────────────────────────────────────────────────
+
 function showResult(id, { risk, riskRaw, category, text, confidence }) {
   const resultEl = document.getElementById(id + '-result');
   resultEl.className = 'result ' + risk + ' active';
@@ -142,7 +130,7 @@ function showResult(id, { risk, riskRaw, category, text, confidence }) {
   streamText(textEl, text, 18);
 }
 
-// ── TAB 1: SCAN THIS PAGE ──────────────────────────────────────────────────────
+
 let rescanTimeout = null;
 
 async function runScan() {
@@ -157,13 +145,13 @@ async function runScan() {
   rescan.style.display = 'none';
 
   try {
-    // Get the current tab's URL and text via Chrome extension API
+    
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
     const url = tab.url || '';
     document.getElementById('current-url').textContent =
       url.replace(/^https?:\/\//, '').split('?')[0].slice(0, 60);
 
-    // Extract page text via content script
+    
     let pageText = '';
     try {
       const results = await chrome.scripting.executeScript({
@@ -195,7 +183,7 @@ async function runScan() {
       throw new Error(err.message || `Server error ${response.status}`);
     }
 
-    // Check if response is JSON (pre-screening skipped Claude) or SSE stream
+    
     const contentType = response.headers.get('content-type') || '';
 
     if (contentType.includes('application/json')) {
@@ -208,17 +196,17 @@ async function runScan() {
         confidence: data.confidence,
       });
     } else {
-      // SSE stream
+      
       let streamResult = null;
       await readSSEStream(
         response,
         (fullText) => {
-          // Show raw text while streaming
+          
           document.getElementById('scan-text').textContent = fullText;
           result.className = 'result warn active';
         },
         (fullText) => {
-          // On done: parse the final Claude response
+        
           streamResult = parseClaudeText(fullText);
           showResult('scan', {
             ...streamResult,
@@ -259,7 +247,7 @@ function runRescan() {
   }, 2000);
 }
 
-// ── TAB 2: PASTE & CHECK ──────────────────────────────────────────────────────
+
 const LIMIT = 180000;
 
 function onPasteInput() {
@@ -356,7 +344,7 @@ async function runPaste() {
   btn.disabled = false;
 }
 
-// ── TAB 3: PHONE CHECK ────────────────────────────────────────────────────────
+
 let consentGiven   = false;
 let transcriptOpen = false;
 
@@ -412,7 +400,7 @@ async function runPhone() {
 
     const contentType = response.headers.get('content-type') || '';
 
-    // No transcript — server returns plain JSON verdict
+   
     if (contentType.includes('application/json')) {
       const data = await response.json();
 
@@ -433,10 +421,7 @@ async function runPhone() {
       });
 
     } else {
-      // SSE stream — transcript was provided
-      // First frame will be 'metadata', then token frames, then done
-      let metaShown = false;
-
+     
       const metaCallback = (event) => {
         metaShown = true;
         showPhoneMeta({
@@ -500,7 +485,7 @@ function showPhoneMeta({ country, lineType, carrier, metadataScore }) {
     metadataScore > 33 ? 'var(--warn-text)'   : 'var(--safe-text)';
 }
 
-// ── HELPER: map server riskLevel string → CSS class ───────────────────────────
+
 function riskLevelToClass(riskLevel = '') {
   const map = {
     'Likely Scam':  'danger',
@@ -511,8 +496,21 @@ function riskLevelToClass(riskLevel = '') {
   return map[riskLevel] || 'uncertain';
 }
 
-// ── INIT: read actual tab URL on popup open ───────────────────────────────────
+
 document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.tab').forEach(btn => {
+    btn.addEventListener('click', () => switchTab(Number(btn.dataset.tab)));
+  });
+
+  document.getElementById('scan-btn').addEventListener('click', runScan);
+  document.getElementById('rescan-btn').addEventListener('click', runRescan);
+  document.getElementById('paste-btn').addEventListener('click', runPaste);
+  document.getElementById('paste-input').addEventListener('input', onPasteInput);
+  document.getElementById('phone-btn').addEventListener('click', runPhone);
+  document.getElementById('phone-input').addEventListener('input', onPhoneInput);
+  document.getElementById('transcript-toggle').addEventListener('click', toggleTranscript);
+  document.getElementById('consent-check').addEventListener('click', toggleConsent);
+
   if (typeof chrome !== 'undefined' && chrome.tabs) {
     chrome.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
       if (tab?.url) {
