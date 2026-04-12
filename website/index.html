@@ -16,9 +16,9 @@
   <div class="nav-links">
     <button class="nav-link active" data-page="home" onclick="go('home')">Home</button>
     <button class="nav-link" data-page="features" onclick="go('features')">Features</button>
-    <button class="nav-link" data-page="extension" onclick="go('extension')">Extension</button>
+    <button class="nav-link" data-page="plans" onclick="go('plans')">Plans</button>
     <button class="nav-link" data-page="install" onclick="go('install')">Install</button>
-    <button class="nav-link nav-cta" onclick="go('install')">Add to Chrome</button>
+    <button class="nav-link nav-cta" onclick="go('install');copyExtUrl()">Add to Chrome</button>
   </div>
 </nav>
 
@@ -130,7 +130,7 @@
 
   <footer>
     <p class="footer-logo">TrustAble</p>
-    <p><a href="#" onclick="go('home')">Home</a> &nbsp;·&nbsp; <a href="#" onclick="go('features')">Features</a> &nbsp;·&nbsp; <a href="#" onclick="go('extension')">Extension</a> &nbsp;·&nbsp; <a href="#" onclick="go('install')">Install</a></p>
+    <p><a href="#" onclick="go('home')">Home</a> &nbsp;·&nbsp; <a href="#" onclick="go('features')">Features</a> &nbsp;·&nbsp; <a href="#" onclick="go('plans')">Plans</a> &nbsp;·&nbsp; <a href="#" onclick="go('install')">Install</a></p>
   </footer>
 </div>
 
@@ -282,130 +282,90 @@
 
   <footer>
     <p class="footer-logo">TrustAble</p>
-    <p><a href="#" onclick="go('home')">Home</a> &nbsp;·&nbsp; <a href="#" onclick="go('features')">Features</a> &nbsp;·&nbsp; <a href="#" onclick="go('extension')">Extension</a> &nbsp;·&nbsp; <a href="#" onclick="go('install')">Install</a></p>
+    <p><a href="#" onclick="go('home')">Home</a> &nbsp;·&nbsp; <a href="#" onclick="go('features')">Features</a> &nbsp;·&nbsp; <a href="#" onclick="go('plans')">Plans</a> &nbsp;·&nbsp; <a href="#" onclick="go('install')">Install</a></p>
   </footer>
 </div>
 
-<!-- ══════════════════════════════════════════ EXTENSION ══ -->
-<div class="page" id="pg-extension">
+<!-- ══════════════════════════════════════════ PLANS ══ -->
+<div class="page" id="pg-plans">
 
   <section style="padding-top:5rem;text-align:center">
     <div class="container">
-      <p class="eyebrow">The extension</p>
-      <h1 class="section-title">See the popup UI</h1>
-      <p class="section-sub" style="margin:.75rem auto 0">Exactly what you'll see when you click the TrustAble icon. Click through each tab below.</p>
+      <p class="eyebrow">Simple pricing</p>
+      <h1 class="section-title">Choose your plan</h1>
+      <p class="section-sub" style="margin:.75rem auto 0">Start free. Upgrade whenever you need more. No hidden fees, no commitments.</p>
     </div>
   </section>
 
   <section style="padding-top:1rem">
     <div class="container">
-      <div class="popup-showcase">
+      <div class="plans-grid">
 
-        <!-- INTERACTIVE POPUP -->
-        <div>
-          <p style="font-size:.7rem;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;text-align:center;margin-bottom:1rem">Interactive demo</p>
-          <div class="ext-popup">
-            <div class="ext-header">
-              <div class="ext-logo">TrustAble</div>
-              <div class="ext-tabs">
-                <button class="ext-tab active" onclick="extTab(0)">Scan Page</button>
-                <button class="ext-tab" onclick="extTab(1)">Paste &amp; Check</button>
-                <button class="ext-tab" onclick="extTab(2)">Phone Check</button>
-              </div>
-            </div>
-            <div class="ext-body">
-
-              <div class="ext-panel active" id="ep-0">
-                <button class="ext-btn" onclick="demoScan()">
-                  <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg>
-                  Scan This Page
-                </button>
-                <button class="ext-btn-s" onclick="demoScan()">↺ Re-scan</button>
-                <div class="ext-res" id="sr" style="display:none">
-                  <div class="ext-resrow">
-                    <span class="risk-badge warn" style="font-size:.7rem;padding:.22rem .6rem">⚠ Suspicious</span>
-                    <span style="font-size:.66rem;color:var(--text3)">Overpayment</span>
-                  </div>
-                  <p class="ext-restext" id="sr-txt"></p>
-                  <div class="ext-barlbl"><span>Confidence</span><span style="color:#F5C56A">78%</span></div>
-                  <div class="conf-bar"><div class="conf-fill" style="width:78%;background:var(--warn)"></div></div>
-                </div>
-              </div>
-
-              <div class="ext-panel" id="ep-1">
-                <textarea class="ext-ta" placeholder="Paste suspicious message, email, DM, or SMS…" id="pa-inp" oninput="paChar()"></textarea>
-                <div class="ext-charlbl"><span id="pa-ct">0</span> / 4000</div>
-                <button class="ext-btn" onclick="demoPaste()">
-                  <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-                  Analyze
-                </button>
-                <div class="ext-res" id="pr" style="display:none">
-                  <div class="ext-resrow">
-                    <span class="risk-badge danger" style="font-size:.7rem;padding:.22rem .6rem">⛔ Likely Scam</span>
-                    <span style="font-size:.66rem;color:var(--text3)">Phishing</span>
-                  </div>
-                  <p class="ext-restext" id="pr-txt"></p>
-                  <div class="ext-barlbl"><span>Confidence</span><span style="color:#F09090">92%</span></div>
-                  <div class="conf-bar"><div class="conf-fill" style="width:92%;background:#D94545"></div></div>
-                </div>
-              </div>
-
-              <div class="ext-panel" id="ep-2">
-                <div class="ext-phonerow">
-                  <select class="ext-sel">
-                    <option>🇧🇬 +359</option><option>🇬🇧 +44</option><option>🇺🇸 +1</option><option>🇩🇪 +49</option>
-                  </select>
-                  <input class="ext-inp" type="text" placeholder="87 123 4567"/>
-                </div>
-                <button class="ext-btn" onclick="demoPhone()">
-                  <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.68A2 2 0 012 .82h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
-                  Check Number
-                </button>
-                <div id="ph-res" style="display:none">
-                  <div class="ext-meta">
-                    <div class="ext-mc"><div class="ext-ml">Country</div><div class="ext-mv">Bulgaria</div></div>
-                    <div class="ext-mc"><div class="ext-ml">Line type</div><div class="ext-mv" style="color:var(--warn)">VoIP</div></div>
-                    <div class="ext-mc"><div class="ext-ml">Carrier</div><div class="ext-mv">Unknown</div></div>
-                    <div class="ext-mc"><div class="ext-ml">Risk score</div><div class="ext-mv" style="color:var(--warn)">67/100</div></div>
-                  </div>
-                  <div class="ext-res">
-                    <div class="ext-resrow"><span class="risk-badge warn" style="font-size:.7rem;padding:.22rem .6rem">⚠ Suspicious</span></div>
-                    <p class="ext-restext">VoIP number with unknown carrier. This may be a spoofed or temporary number — exercise caution.</p>
-                  </div>
-                </div>
-              </div>
-
-            </div>
+        <!-- FREE -->
+        <div class="plan-card">
+          <p class="plan-name">Free</p>
+          <div class="plan-price">
+            <span class="plan-amount">£0</span>
+            <span class="plan-period">&thinsp;/ month</span>
           </div>
+          <p class="plan-desc">Everything you need to get started. No credit card, no expiry — free forever.</p>
+          <button class="btn btn-s plan-btn">Get started free</button>
+          <ul class="plan-features">
+            <li>10 page scans per day</li>
+            <li>Paste &amp; Check (basic)</li>
+            <li>Phone metadata lookup</li>
+            <li>4-level risk verdict</li>
+            <li>Community support</li>
+          </ul>
         </div>
 
-        <!-- DESCRIPTION -->
-        <div style="max-width:360px">
-          <p class="eyebrow">Under the hood</p>
-          <h2 class="section-title" style="font-size:1.9rem;margin-bottom:1.25rem">How the extension works</h2>
-          <div class="tech-cards" style="grid-template-columns:1fr">
-            <div class="card" style="padding:1.25rem">
-              <h3 style="margin-bottom:.3rem">Popup UI</h3>
-              <p>Tabs, streaming results, loading states, and character counter — the interface you interact with.</p>
-            </div>
-            <div class="card" style="padding:1.25rem">
-              <h3 style="margin-bottom:.3rem">Content extractor</h3>
-              <p>Strips noise from pages, pulls out clean readable text, and detects which platform you're on.</p>
-            </div>
-            <div class="card" style="padding:1.25rem">
-              <h3 style="margin-bottom:.3rem">Background service</h3>
-              <p>Coordinates communication between the UI and the API — routes requests and handles responses.</p>
-            </div>
+        <!-- PLUS -->
+        <div class="plan-card plan-card--popular">
+          <div class="plan-popular-badge">Most popular</div>
+          <p class="plan-name">Plus</p>
+          <div class="plan-price">
+            <span class="plan-amount">£4.99</span>
+            <span class="plan-period">&thinsp;/ month</span>
           </div>
+          <p class="plan-desc">Includes a 14-day free trial. Full AI analysis with no daily limits — cancel anytime.</p>
+          <button class="btn btn-p plan-btn">Start free trial</button>
+          <ul class="plan-features">
+            <li>Everything in Free</li>
+            <li>Unlimited page scans</li>
+            <li>Full phone + transcript AI</li>
+            <li>Real-time streaming results</li>
+            <li>Priority AI processing</li>
+            <li>Email support</li>
+          </ul>
+        </div>
+
+        <!-- PRO -->
+        <div class="plan-card">
+          <p class="plan-name">Pro</p>
+          <div class="plan-price">
+            <span class="plan-amount">£12.99</span>
+            <span class="plan-period">&thinsp;/ month</span>
+          </div>
+          <p class="plan-desc">Built for power users and teams. API access, custom thresholds, and shared protection.</p>
+          <button class="btn btn-s plan-btn">Get Pro</button>
+          <ul class="plan-features">
+            <li>Everything in Plus</li>
+            <li>Team sharing (up to 5 users)</li>
+            <li>Custom risk thresholds</li>
+            <li>API access</li>
+            <li>Advanced scan history</li>
+            <li>Priority support</li>
+          </ul>
         </div>
 
       </div>
+      <p style="text-align:center;font-size:.78rem;color:var(--text3);margin-top:2.5rem">All plans include the Chrome extension. Upgrade, downgrade, or cancel at any time.</p>
     </div>
   </section>
 
   <footer>
     <p class="footer-logo">TrustAble</p>
-    <p><a href="#" onclick="go('home')">Home</a> &nbsp;·&nbsp; <a href="#" onclick="go('features')">Features</a> &nbsp;·&nbsp; <a href="#" onclick="go('extension')">Extension</a> &nbsp;·&nbsp; <a href="#" onclick="go('install')">Install</a></p>
+    <p><a href="#" onclick="go('home')">Home</a> &nbsp;·&nbsp; <a href="#" onclick="go('features')">Features</a> &nbsp;·&nbsp; <a href="#" onclick="go('plans')">Plans</a> &nbsp;·&nbsp; <a href="#" onclick="go('install')">Install</a></p>
   </footer>
 </div>
 
@@ -425,14 +385,14 @@
         <h3 style="font-size:1.05rem;font-weight:500;margin-bottom:.5rem">TrustAble Extension</h3>
         <p style="font-size:.85rem;color:var(--text2);line-height:1.65;margin-bottom:1.5rem">Download the .zip, then follow the 4-step installation below. Works on any Chromium-based browser.</p>
         <div style="display:flex;gap:.7rem;flex-wrap:wrap">
-          <button class="btn btn-p">
+          <a class="btn btn-p" href="https://github.com/airifqiry/TrustAble/archive/refs/heads/main.zip" download>
             <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             Download .zip
-          </button>
-          <button class="btn btn-s">
+          </a>
+          <a class="btn btn-s" href="https://github.com/airifqiry/TrustAble" target="_blank" rel="noopener">
             <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
             View on GitHub
-          </button>
+          </a>
         </div>
       </div>
     </div>
@@ -454,7 +414,11 @@
         <div class="install-card">
           <div class="install-num">2</div>
           <h4>Open extensions page</h4>
-          <p>Type <code>chrome://extensions</code> into the address bar and press Enter.</p>
+          <p>Copy the address below and paste it into the Chrome address bar, then press Enter.</p>
+          <div style="display:flex;align-items:center;gap:.5rem;margin-top:.6rem">
+            <code id="ext-url">chrome://extensions</code>
+            <button class="btn btn-s" style="padding:.25rem .6rem;font-size:.72rem" onclick="copyExtUrl(this)">Copy</button>
+          </div>
         </div>
         <div class="install-card">
           <div class="install-num">3</div>
@@ -523,7 +487,7 @@
 
   <footer>
     <p class="footer-logo">TrustAble</p>
-    <p><a href="#" onclick="go('home')">Home</a> &nbsp;·&nbsp; <a href="#" onclick="go('features')">Features</a> &nbsp;·&nbsp; <a href="#" onclick="go('extension')">Extension</a> &nbsp;·&nbsp; <a href="#" onclick="go('install')">Install</a></p>
+    <p><a href="#" onclick="go('home')">Home</a> &nbsp;·&nbsp; <a href="#" onclick="go('features')">Features</a> &nbsp;·&nbsp; <a href="#" onclick="go('plans')">Plans</a> &nbsp;·&nbsp; <a href="#" onclick="go('install')">Install</a></p>
   </footer>
 </div>
 

@@ -98,35 +98,23 @@ code{font-family:'DM Mono',monospace;font-size:.8em;background:var(--bg4);paddin
 .cursor-blink{display:inline-block;width:2px;height:.95em;background:var(--coral);margin-left:1px;vertical-align:text-bottom;animation:blink 1s step-end infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 
-/* ─── EXTENSION PAGE ─── */
-.ext-popup{width:340px;background:var(--bg2);border:.5px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:0 40px 80px rgba(0,0,0,.6)}
-.ext-header{padding:13px 15px 0}
-.ext-logo{font-family:'Playfair Display',serif;font-style:italic;font-size:1rem;color:var(--text);margin-bottom:11px}
-.ext-tabs{display:flex;border-bottom:.5px solid var(--border)}
-.ext-tab{flex:1;padding:9px 0;text-align:center;font-size:.73rem;font-weight:500;color:var(--text3);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;transition:all .18s;font-family:'DM Sans',sans-serif}
-.ext-tab.active{color:var(--coral);border-bottom-color:var(--coral)}
-.ext-body{padding:13px}
-.ext-panel{display:none}.ext-panel.active{display:block}
-.ext-btn{width:100%;background:var(--coral);color:#fff;border:none;border-radius:8px;padding:.65rem;font-size:.82rem;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.45rem;transition:background .18s;margin-bottom:8px;font-family:'DM Sans',sans-serif}
-.ext-btn:hover{background:#b84a22}
-.ext-btn-s{width:100%;background:transparent;color:var(--text2);border:.5px solid var(--border);border-radius:8px;padding:.5rem;font-size:.75rem;cursor:pointer;transition:all .18s;font-family:'DM Sans',sans-serif}
-.ext-btn-s:hover{border-color:var(--border2);color:var(--text)}
-.ext-res{background:var(--bg);border:.5px solid var(--border);border-radius:9px;padding:11px;margin-top:9px}
-.ext-resrow{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
-.ext-restext{font-size:.76rem;color:var(--text2);line-height:1.55;margin-bottom:7px}
-.ext-barlbl{display:flex;justify-content:space-between;font-size:.68rem;color:var(--text3);margin-bottom:2px}
-.ext-ta{width:100%;background:var(--bg);border:.5px solid var(--border);border-radius:8px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.78rem;padding:9px;resize:none;outline:none;height:85px;transition:border-color .2s;margin-bottom:7px}
-.ext-ta:focus{border-color:var(--border2)}
-.ext-ta::placeholder{color:var(--text3)}
-.ext-charlbl{text-align:right;font-size:.68rem;color:var(--text3);margin-top:-4px;margin-bottom:7px}
-.ext-phonerow{display:flex;gap:5px;margin-bottom:8px}
-.ext-sel{background:var(--bg);border:.5px solid var(--border);border-radius:7px;color:var(--text);font-size:.76rem;padding:8px 6px;outline:none;cursor:pointer}
-.ext-inp{flex:1;background:var(--bg);border:.5px solid var(--border);border-radius:7px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.76rem;padding:8px 9px;outline:none}
-.ext-meta{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:7px}
-.ext-mc{background:var(--bg);border:.5px solid var(--border);border-radius:7px;padding:6px 8px}
-.ext-ml{font-size:.6rem;color:var(--text3);text-transform:uppercase;letter-spacing:.07em}.ext-mv{font-size:.76rem;font-weight:500}
-.popup-showcase{display:flex;justify-content:center;align-items:flex-start;gap:3rem;flex-wrap:wrap;padding-top:3rem}
-.tech-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin-top:2.5rem}
+/* ─── PLANS PAGE ─── */
+.plans-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:3rem;align-items:start}
+.plan-card{background:var(--bg2);border:.5px solid var(--border);border-radius:var(--r2);padding:2rem;position:relative;transition:border-color .2s,background .2s}
+.plan-card:hover{border-color:var(--border2);background:var(--bg3)}
+.plan-card--popular{border-color:rgba(216,90,48,.35);background:var(--bg3)}
+.plan-card--popular:hover{border-color:rgba(216,90,48,.55)}
+.plan-popular-badge{display:inline-flex;align-items:center;background:var(--coral-pale);color:var(--coral2);font-size:.68rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;padding:.22rem .75rem;border-radius:100px;margin-bottom:1.1rem;border:.5px solid rgba(216,90,48,.22)}
+.plan-name{font-family:'Playfair Display',serif;font-style:italic;font-size:1.35rem;font-weight:400;color:var(--text);margin-bottom:.6rem}
+.plan-price{display:flex;align-items:baseline;gap:0;margin-bottom:.9rem}
+.plan-amount{font-size:2.4rem;font-weight:300;letter-spacing:-.03em;color:var(--text);line-height:1}
+.plan-period{font-size:.82rem;color:var(--text3)}
+.plan-desc{font-size:.83rem;color:var(--text2);line-height:1.65;margin-bottom:1.5rem}
+.plan-btn{width:100%;justify-content:center;margin-bottom:1.75rem}
+.plan-features{list-style:none;display:flex;flex-direction:column;gap:.65rem}
+.plan-features li{display:flex;align-items:flex-start;gap:.6rem;font-size:.82rem;color:var(--text2);line-height:1.45}
+.plan-features li::before{content:'';width:5px;height:5px;min-width:5px;background:var(--coral);border-radius:50%;margin-top:.45rem}
+.plan-card--popular .plan-features li::before{background:var(--coral)}
 
 /* ─── INSTALL PAGE ─── */
 .dl-card{background:var(--bg2);border:.5px solid var(--border);border-radius:var(--r2);padding:2.25rem;max-width:500px;margin:2.5rem auto 0}
@@ -155,6 +143,5 @@ footer a:hover{color:var(--text)}
   .grid-2{grid-template-columns:1fr}
   .nav-links .nav-link:not(.nav-cta){display:none}
   .hero-title{font-size:3.5rem}
-  .popup-showcase{flex-direction:column;align-items:center}
-  .ext-popup{width:100%;max-width:340px}
+  .plans-grid{grid-template-columns:1fr}
 }

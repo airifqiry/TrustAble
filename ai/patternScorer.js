@@ -1,7 +1,6 @@
 import {
   MAX_PATTERN_SCORE,
   PHONE_WEIGHTS,
-  PHONE_RISK_LEVEL_SCORES,
 } from './constants.js';
 
 function normalizeText(text = '') {
@@ -28,17 +27,6 @@ function includesPattern(text, patternText) {
   return regex.test(normalizedText) || normalizedText.includes(normalizedPattern);
 }
 
-function getPhoneRiskLevelScore(riskLevel) {
-  if (riskLevel === 3 || riskLevel === '3' || riskLevel === 'high') {
-    return PHONE_RISK_LEVEL_SCORES.high;
-  }
-
-  if (riskLevel === 2 || riskLevel === '2' || riskLevel === 'medium') {
-    return PHONE_RISK_LEVEL_SCORES.medium;
-  }
-
-  return PHONE_RISK_LEVEL_SCORES.low;
-}
 
 export function scorePatternMatches({ text = '', patterns = [] }) {
   const matchedPatterns = [];
@@ -76,8 +64,12 @@ export function scorePhoneMetadata({ metadata = null, dbSignal = null }) {
   const matchedSignals = [];
 
   if (dbSignal?.prefix) {
-    score += PHONE_WEIGHTS.knownScamPrefix;
-    matchedSignals.push('known_scam_prefix');
+    const level = Number(dbSignal.risk_level);
+    const contribution = level >= 3 ? PHONE_WEIGHTS.knownScamPrefixHigh
+                       : level >= 2 ? PHONE_WEIGHTS.knownScamPrefixMedium
+                       : PHONE_WEIGHTS.knownScamPrefixLow;
+    score += contribution;
+    matchedSignals.push(`known_scam_prefix_level_${level}`);
   }
 
   const lineType = metadata?.lineType?.toLowerCase() || dbSignal?.line_type?.toLowerCase() || '';
@@ -95,11 +87,6 @@ export function scorePhoneMetadata({ metadata = null, dbSignal = null }) {
   if (metadata && carrier && /unknown|unregistered|unavailable/i.test(carrier)) {
     score += PHONE_WEIGHTS.unregisteredCarrier;
     matchedSignals.push('unregistered_carrier');
-  }
-
-  if (dbSignal?.risk_level !== undefined && dbSignal?.risk_level !== null) {
-    score = Math.max(score, getPhoneRiskLevelScore(dbSignal.risk_level));
-    matchedSignals.push(`db_risk_level_${dbSignal.risk_level}`);
   }
 
   return {

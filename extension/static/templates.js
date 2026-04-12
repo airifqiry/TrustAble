@@ -411,13 +411,12 @@ async function runPhone() {
         metadataScore: data.metadataScore || 0,
       });
 
-      const riskMap = { likely_scam: 'danger', suspicious: 'warn', uncertain: 'uncertain', safe: 'safe' };
       showResult('phone', {
-        risk:       riskMap[data.verdict] || 'uncertain',
-        riskRaw:    data.verdict || 'Uncertain',
+        risk:       riskLevelToClass(data.riskLevel),
+        riskRaw:    data.riskLevel || 'Uncertain',
         category:   'Phone Check',
-        text:       `Metadata risk score: ${data.metadataScore}/100. No transcript provided.`,
-        confidence: data.metadataScore || 0,
+        text:       data.explanation || `Metadata risk score: ${data.metadataScore}/100.`,
+        confidence: data.confidence ?? data.metadataScore ?? 0,
       });
 
     } else {

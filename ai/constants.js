@@ -7,7 +7,9 @@ export const WEIGHTS = {
 export const PHONE_WEIGHTS = {
   voip: 40,
   unregisteredCarrier: 35,
-  knownScamPrefix: 100,
+  knownScamPrefixHigh: 55,
+  knownScamPrefixMedium: 30,
+  knownScamPrefixLow: 10,
   mismatchedCountry: 30,
   noCarrierInfo: 25,
 };

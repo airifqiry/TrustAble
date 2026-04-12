@@ -64,6 +64,16 @@ function paChar() {
   document.getElementById('pa-ct').textContent = len;
 }
 
+// ── COPY CHROME EXTENSIONS URL ───────────────────────────────────────────────
+function copyExtUrl(btn) {
+  navigator.clipboard.writeText('chrome://extensions').then(() => {
+    if (!btn) return;
+    const original = btn.textContent;
+    btn.textContent = 'Copied!';
+    setTimeout(() => { btn.textContent = original; }, 1800);
+  });
+}
+
 // ── TYPE ANIMATION ────────────────────────────────────────────────────────────
 function typeText(el, text, speed) {
   el.textContent = '';
