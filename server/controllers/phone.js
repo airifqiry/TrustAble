@@ -112,7 +112,7 @@ export async function handlePhone(req, res) {
   let metadataSignals = [];
 
   try {
-    const metadataResult = await scorePhoneMetadata({ metadata, dbSignal });
+    const metadataResult = scorePhoneMetadata({ metadata, dbSignal });
     metadataScore = metadataResult.score;
     metadataSignals = metadataResult.matchedSignals;
   } catch (err) {
@@ -125,16 +125,13 @@ export async function handlePhone(req, res) {
                     : metadataScore >= 20 ? 'Uncertain'
                     : 'Appears Safe';
 
-    const ipqsScore = metadata?.fraudScore ?? null;
-    const ipqsNote  = ipqsScore > 0 ? ` IPQualityScore rated this number ${ipqsScore}/100.` : '';
-
     const explanation = metadataScore >= 70
-      ? `This number shows strong risk signals from metadata analysis including line type and carrier information.${ipqsNote}`
+      ? 'This number shows strong risk signals from metadata analysis including line type and carrier information.'
       : metadataScore >= 45
-      ? `This number shows some suspicious signals. Exercise caution before engaging.${ipqsNote}`
+      ? 'This number shows some suspicious signals. Exercise caution before engaging.'
       : metadataScore >= 20
-      ? `This number shows minor risk signals. No transcript was provided for deeper analysis.${ipqsNote}`
-      : `No strong risk signals detected from this number's metadata.${ipqsNote}`;
+      ? 'This number shows minor risk signals. No transcript was provided for deeper analysis.'
+      : 'No strong risk signals detected from this number\'s metadata.';
 
     return res.json({
       riskLevel,
