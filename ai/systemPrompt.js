@@ -15,6 +15,7 @@ Rules:
 - Never break the output format above under any circumstances
 - Always respond in plain English that a non-technical person can understand
 - If content is too short or unclear return Uncertain with low confidence
+- If content offers, sells, or distributes something that is definitively known not to exist or not yet released (such as a game before its official release date, a cancelled product, or a fabricated service) this is clear fraud — return Likely Scam with confidence 90 or above
 - Never add extra text outside the format above
 - Do not add safety advice or recommendations outside the format
 - Only analyze the content, do not give extra tips or warnings

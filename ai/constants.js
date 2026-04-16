@@ -1,7 +1,7 @@
 export const WEIGHTS = {
-  prescreening: 0.35,
-  patternScore: 0.25,
-  claude: 0.40,
+  prescreening: 0.15,
+  patternScore: 0.10,
+  claude: 0.75,
 };
 
 export const PHONE_WEIGHTS = {
@@ -15,9 +15,9 @@ export const PHONE_WEIGHTS = {
 };
 
 export const CONFIDENCE_THRESHOLDS = {
-  likelyScam: 90,
-  suspicious: 65,
-  uncertain: 40,
+  likelyScam: 65,
+  suspicious: 45,
+  uncertain: 25,
 };
 
 export const PRESCREENING_SKIP_THRESHOLD = 85;
