@@ -411,12 +411,17 @@ async function runPhone() {
         metadataScore: data.metadataScore || 0,
       });
 
+      const riskScore = data.metadataScore ?? 0;
+      const confidence = data.riskLevel === 'Appears Safe' ? Math.max(85, 100 - riskScore)
+                       : data.riskLevel === 'Uncertain'    ? 50
+                       : riskScore;
+
       showResult('phone', {
         risk:       riskLevelToClass(data.riskLevel),
         riskRaw:    data.riskLevel || 'Uncertain',
         category:   'Phone Check',
-        text:       data.explanation || `Metadata risk score: ${data.metadataScore}/100.`,
-        confidence: data.confidence ?? data.metadataScore ?? 0,
+        text:       data.explanation || `Metadata risk score: ${riskScore}/100.`,
+        confidence,
       });
 
     } else {
@@ -478,7 +483,7 @@ function showPhoneMeta({ country, lineType, carrier, metadataScore }) {
   document.getElementById('meta-carrier').textContent = carrier;
 
   const riskEl = document.getElementById('meta-risk');
-  riskEl.textContent  = metadataScore ? metadataScore + '/100' : '—';
+  riskEl.textContent  = metadataScore != null ? metadataScore + '/100' : '—';
   riskEl.style.color  =
     metadataScore > 66 ? 'var(--danger-text)' :
     metadataScore > 33 ? 'var(--warn-text)'   : 'var(--safe-text)';

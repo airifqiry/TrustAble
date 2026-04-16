@@ -1,16 +1,3 @@
-/**
- * controllers/text.js
- *
- * Handles POST /analyze/text
- * Called by Tab 2 — Paste & Check.
- *
- * Expected body:
- *   { content: string, region?: string }
- *
- *   content — any pasted text: message, email, SMS, DM, link, or mixed content
- *   region  — optional region hint: 'BG' | 'UK' | 'US' | 'global'
- */
-
 import { fetchPatterns }       from '../ragRetriever.js';
 import { initSSE, pipeStream } from '../streamHandler.js';
 
@@ -20,7 +7,6 @@ import { analyzeWithClaude } from '../../ai/index.js';
 export async function handleText(req, res) {
   const { content, region = 'global' } = req.body;
 
-  // ── Input validation ────────────────────────────────────────────────────────
   if (!content || typeof content !== 'string' || content.trim().length < 10) {
     return res.status(400).json({
       error:   'Invalid request',
@@ -28,7 +14,6 @@ export async function handleText(req, res) {
     });
   }
 
-  // ── RAG retrieval ───────────────────────────────────────────────────────────
   let patterns = [];
   try {
     patterns = await fetchPatterns({ contentType: 'message', region });
@@ -36,7 +21,6 @@ export async function handleText(req, res) {
     console.warn('[Text] RAG fetch failed, continuing without patterns:', err.message);
   }
 
-  // ── Pre-screening ───────────────────────────────────────────────────────────
   let preScreen;
   try {
     preScreen = await runPreScreening({
@@ -53,8 +37,6 @@ export async function handleText(req, res) {
     return res.json(preScreen.result);
   }
 
-
-  // ── Stream Claude analysis ──────────────────────────────────────────────────
   initSSE(res);
 
   try {

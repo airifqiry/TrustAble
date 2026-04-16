@@ -1,18 +1,6 @@
-/**
- * authenticate.js
- *
- * Validates the signed API key the Chrome extension sends with every request.
- * The extension includes the key in the Authorization header:
- *   Authorization: Bearer <SHIELD_API_KEY>
- *
- * SHIELD_API_KEY is set in .env and never hardcoded.
- * Unauthenticated requests are rejected before any processing happens.
- */
-
 const VALID_KEY = process.env.SHIELD_API_KEY;
 
 export function authenticate(req, res, next) {
-  // Health check is public — no key needed
   if (req.path === '/health') return next();
 
   if (!VALID_KEY) {

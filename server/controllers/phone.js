@@ -1,24 +1,4 @@
-/**
- * controllers/phone.js
- *
- * Handles POST /analyze/phone
- * Called by Tab 3 — Phone Number Check.
- *
- * Expected body:
- *   { phone: string, transcript?: string, region?: string }
- *
- *   phone       — phone number in any common format (+359..., 00359..., etc.)
- *   transcript  — optional pasted conversation / call transcript
- *   region      — optional region hint for pattern retrieval
- *
- * This controller:
- *   1. Looks up the number via Twilio Lookup (or NumVerify as fallback)
- *   2. Checks the number against Viktoria's phone risk signals table
- *   3. Passes all data to Anna's phone scoring function
- *   4. If a transcript is provided, also streams a Claude analysis
- *   5. Returns a unified verdict combining metadata score + Claude score
- */
-
+import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import { getPhoneRisk }        from '../../database/index.js';
 import { fetchPatterns }       from '../ragRetriever.js';
 import { initSSE, pipeStream, sendSSE } from '../streamHandler.js';
@@ -26,18 +6,18 @@ import { initSSE, pipeStream, sendSSE } from '../streamHandler.js';
 import { scorePhoneMetadata } from '../../ai/patternScorer.js';
 import { analyzeWithClaude }  from '../../ai/index.js';
 
-// ── Phone number lookup ───────────────────────────────────────────────────────
+function getCountryFromNumber(e164) {
+  try {
+    const parsed = parsePhoneNumberFromString(e164);
+    if (!parsed) return null;
+    const name = new Intl.DisplayNames(['en'], { type: 'region' });
+    return name.of(parsed.country) || parsed.country || null;
+  } catch {
+    return null;
+  }
+}
 
-/**
- * Look up carrier/line-type metadata for a phone number.
- * Tries Twilio first, falls back to NumVerify.
- * Returns null if both fail — analysis still continues without metadata.
- *
- * @param {string} phone — E.164 formatted number
- * @returns {Promise<object|null>}
- */
 async function lookupPhoneMetadata(phone) {
-  // Twilio Lookup
   if (process.env.TWILIO_ACCOUNT_SID && process.env.TWILIO_AUTH_TOKEN) {
     try {
       const url = `https://lookups.twilio.com/v2/PhoneNumbers/${encodeURIComponent(phone)}?Fields=line_type_intelligence`;
@@ -65,35 +45,33 @@ async function lookupPhoneMetadata(phone) {
     }
   }
 
-  // NumVerify fallback
-  if (process.env.NUMVERIFY_API_KEY) {
+  if (process.env.PHONE_API_KEY) {
     try {
-      const url = `https://apilayer.net/api/validate?access_key=${process.env.NUMVERIFY_API_KEY}&number=${encodeURIComponent(phone)}&format=1`;
-      const response = await fetch(url);
+      const baseUrl = process.env.PHONE_API_KEY.replace('USER_PHONE_HERE', encodeURIComponent(phone));
+      const response = await fetch(baseUrl);
 
       if (response.ok) {
         const data = await response.json();
-        return {
-          source:   'numverify',
-          valid:    data.valid,
-          country:  data.country_code,
-          carrier:  data.carrier || null,
-          lineType: data.line_type || null,
-        };
+        if (data.success !== false) {
+          return {
+            source:     'ipqualityscore',
+            valid:      data.valid,
+            country:    data.country_code || null,
+            carrier:    data.carrier      || null,
+            lineType:   data.line_type?.toLowerCase() || null,
+            fraudScore: data.fraud_score  ?? null,
+            risky:      data.risky        ?? null,
+          };
+        }
       }
     } catch (err) {
-      console.warn('[Phone] NumVerify lookup failed:', err.message);
+      console.warn('[Phone] IPQualityScore lookup failed:', err.message);
     }
   }
 
   return null;
 }
 
-/**
- * Normalize phone number to E.164 format for API lookups.
- * @param {string} phone
- * @returns {string}
- */
 function normalizePhone(phone) {
   const stripped = phone.replace(/[\s\-().]/g, '');
   if (stripped.startsWith('00')) return '+' + stripped.slice(2);
@@ -101,12 +79,9 @@ function normalizePhone(phone) {
   return stripped;
 }
 
-// ── Route handler ─────────────────────────────────────────────────────────────
-
 export async function handlePhone(req, res) {
   const { phone, transcript, region = 'global' } = req.body;
 
-  // ── Input validation ────────────────────────────────────────────────────────
   if (!phone || typeof phone !== 'string' || phone.trim().length < 5) {
     return res.status(400).json({
       error:   'Invalid request',
@@ -116,7 +91,6 @@ export async function handlePhone(req, res) {
 
   const normalizedPhone = normalizePhone(phone.trim());
 
-  // ── Phone metadata lookup (Twilio / NumVerify) ──────────────────────────────
   const [apiMeta, dbRisk] = await Promise.allSettled([
     lookupPhoneMetadata(normalizedPhone),
     getPhoneRisk(normalizedPhone),
@@ -127,6 +101,11 @@ export async function handlePhone(req, res) {
 
   if (apiMeta.status === 'rejected') {
     console.warn('[Phone] Metadata lookup error:', apiMeta.reason?.message);
+  }
+
+  if (metadata) {
+    if (!metadata.lineType) metadata.lineType = dbSignal?.line_type || null;
+    if (!metadata.country)  metadata.country  = getCountryFromNumber(normalizedPhone);
   }
 
   let metadataScore = 0;
@@ -140,21 +119,23 @@ export async function handlePhone(req, res) {
     console.warn('[Phone] Metadata scoring failed:', err.message);
   }
 
-  // ── If no transcript: return metadata-only verdict (no streaming needed) ────
   if (!transcript || transcript.trim().length < 10) {
     const riskLevel = metadataScore >= 70 ? 'Likely Scam'
                     : metadataScore >= 45 ? 'Suspicious'
                     : metadataScore >= 20 ? 'Uncertain'
                     : 'Appears Safe';
-  
+
+    const ipqsScore = metadata?.fraudScore ?? null;
+    const ipqsNote  = ipqsScore > 0 ? ` IPQualityScore rated this number ${ipqsScore}/100.` : '';
+
     const explanation = metadataScore >= 70
-      ? 'This number shows strong risk signals from metadata analysis including line type and carrier information.'
+      ? `This number shows strong risk signals from metadata analysis including line type and carrier information.${ipqsNote}`
       : metadataScore >= 45
-      ? 'This number shows some suspicious signals. Exercise caution before engaging.'
+      ? `This number shows some suspicious signals. Exercise caution before engaging.${ipqsNote}`
       : metadataScore >= 20
-      ? 'This number shows minor risk signals. No transcript was provided for deeper analysis.'
-      : 'No strong risk signals detected from this number metadata.';
-  
+      ? `This number shows minor risk signals. No transcript was provided for deeper analysis.${ipqsNote}`
+      : `No strong risk signals detected from this number's metadata.${ipqsNote}`;
+
     return res.json({
       riskLevel,
       confidence:  metadataScore,
@@ -168,7 +149,6 @@ export async function handlePhone(req, res) {
     });
   }
 
-  // ── Transcript provided: stream Claude analysis ─────────────────────────────
   let patterns = [];
   try {
     patterns = await fetchPatterns({ contentType: 'phone', region });
@@ -178,7 +158,6 @@ export async function handlePhone(req, res) {
 
   initSSE(res);
 
-  // Send metadata frame first so the extension can show phone info immediately
   sendSSE(res, {
     type:          'metadata',
     phone:         normalizedPhone,

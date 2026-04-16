@@ -2,20 +2,14 @@ import { pool } from '../db.js';
 import { bulkAddPatterns } from '../queries/addPattern.js';
 
 const phoneRiskSignals = [
-  // Bulgaria
   { prefix: '+35970', region: 'BG', risk_level: 3, line_type: 'VoIP',    notes: 'Bulgarian VoIP range frequently used in scam calls', source: 'manual' },
   { prefix: '+3598',  region: 'BG', risk_level: 2, line_type: 'unknown', notes: 'Bulgarian mobile/VoIP — check carrier', source: 'manual' },
-  // UK
   { prefix: '+44191', region: 'UK', risk_level: 3, line_type: 'VoIP',    notes: 'UK VoIP range associated with tech support scams', source: 'manual' },
   { prefix: '+447',   region: 'UK', risk_level: 2, line_type: 'mobile',  notes: 'UK mobile — used in WhatsApp scams', source: 'manual' },
-  // US
   { prefix: '+1347',  region: 'US', risk_level: 3, line_type: 'VoIP',    notes: 'US VoIP frequently spoofed by scammers', source: 'manual' },
   { prefix: '+1900',  region: 'US', risk_level: 3, line_type: 'premium', notes: 'US premium rate — calling back is charged heavily', source: 'manual' },
-  // Nigeria
   { prefix: '+234',   region: 'NG', risk_level: 3, line_type: 'unknown', notes: 'Nigeria — advance fee and romance scams', source: 'manual' },
-  // Romania — Phase 4 expansion
   { prefix: '+40',    region: 'RO', risk_level: 2, line_type: 'unknown', notes: 'Romania — placeholder for Phase 4 regional expansion', source: 'manual' },
-  // Greece — Phase 4 expansion
   { prefix: '+30',    region: 'GR', risk_level: 2, line_type: 'unknown', notes: 'Greece — placeholder for Phase 4 regional expansion', source: 'manual' },
 ];
 

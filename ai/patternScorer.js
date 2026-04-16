@@ -89,6 +89,19 @@ export function scorePhoneMetadata({ metadata = null, dbSignal = null }) {
     matchedSignals.push('unregistered_carrier');
   }
 
+  // Use IPQualityScore's fraud_score as a baseline when no DB signal exists
+  const fraudScore = metadata?.fraudScore ?? null;
+  if (fraudScore !== null) {
+    const ipqsContribution = Math.round(fraudScore * 0.65);
+    if (!dbSignal?.prefix) {
+      score = Math.max(score, ipqsContribution);
+      matchedSignals.push('ipqs_fraud_score');
+    } else {
+      score = Math.round(score * 0.5 + ipqsContribution * 0.5);
+      matchedSignals.push('ipqs_fraud_score_blended');
+    }
+  }
+
   return {
     score: Math.min(score, 100),
     matchedSignals,

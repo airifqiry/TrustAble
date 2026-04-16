@@ -21,22 +21,17 @@ app.use(rateLimiter);
 app.use(authenticate);
 app.use(sanitize);
 
-// ── Routes ────────────────────────────────────────────────────────────────────
 app.use('/analyze', analyzeRoutes);
 
-// ── Health check (no auth required — used by Railway / Render) ────────────────
 app.get('/health', (_req, res) => res.json({ status: 'ok' }));
 
-// ── 404 ───────────────────────────────────────────────────────────────────────
 app.use((_req, res) => res.status(404).json({ error: 'Not found' }));
 
-// ── Global error handler ──────────────────────────────────────────────────────
 app.use((err, _req, res, _next) => {
   console.error('[Server] Unhandled error:', err.message);
   res.status(500).json({ error: 'Internal server error' });
 });
 
-// ── Startup ───────────────────────────────────────────────────────────────────
 async function start() {
   await testConnection();
   app.listen(PORT, () => {
