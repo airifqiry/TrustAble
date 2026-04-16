@@ -11,6 +11,10 @@ function escapeRegExp(value = '') {
   return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
+function hasNonAscii(str) {
+  return /[^\u0000-\u007F]/.test(str);
+}
+
 function includesPattern(text, patternText) {
   if (!text || !patternText) {
     return false;
@@ -23,8 +27,12 @@ function includesPattern(text, patternText) {
     return false;
   }
 
+  if (hasNonAscii(normalizedPattern)) {
+    return normalizedText.includes(normalizedPattern);
+  }
+
   const regex = new RegExp(`\\b${escapeRegExp(normalizedPattern)}\\b`, 'i');
-  return regex.test(normalizedText) || normalizedText.includes(normalizedPattern);
+  return regex.test(normalizedText);
 }
 
 

@@ -1,4 +1,15 @@
 let dnsBootstrapCache = null;
+let dnsBootstrapCacheTime = 0;
+const BOOTSTRAP_CACHE_TTL_MS = 24 * 60 * 60 * 1000;
+const FETCH_TIMEOUT_MS = 5000;
+
+function fetchWithTimeout(url, options = {}) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+  return fetch(url, { ...options, signal: controller.signal }).finally(() =>
+    clearTimeout(timer)
+  );
+}
 
 function normalizeDomain(domain = '') {
   return domain
@@ -19,11 +30,11 @@ function getTld(domain = '') {
 }
 
 async function getDnsBootstrap() {
-  if (dnsBootstrapCache) {
+  if (dnsBootstrapCache && Date.now() - dnsBootstrapCacheTime < BOOTSTRAP_CACHE_TTL_MS) {
     return dnsBootstrapCache;
   }
 
-  const response = await fetch('https://data.iana.org/rdap/dns.json', {
+  const response = await fetchWithTimeout('https://data.iana.org/rdap/dns.json', {
     headers: {
       Accept: 'application/json',
     },
@@ -34,6 +45,7 @@ async function getDnsBootstrap() {
   }
 
   dnsBootstrapCache = await response.json();
+  dnsBootstrapCacheTime = Date.now();
   return dnsBootstrapCache;
 }
 
@@ -89,7 +101,7 @@ export async function getDomainAge(domain) {
 
     const rdapUrl = `${rdapBaseUrl}/domain/${encodeURIComponent(normalizedDomain)}`;
 
-    const response = await fetch(rdapUrl, {
+    const response = await fetchWithTimeout(rdapUrl, {
       headers: {
         Accept: 'application/rdap+json, application/json',
       },

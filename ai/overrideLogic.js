@@ -7,14 +7,20 @@ import {
 export function applyOverrideLogic({
   score = 0,
   knownBadDomain = false,
-  knownScamPrefix = false,
+  knownScamPrefixLevel = 0,
   category = null,
   explanation = '',
 }) {
-  if (knownScamPrefix) {
+  if (knownScamPrefixLevel > 0) {
+    const prefixScore =
+      knownScamPrefixLevel >= 3
+        ? PHONE_WEIGHTS.knownScamPrefixHigh
+        : knownScamPrefixLevel >= 2
+        ? PHONE_WEIGHTS.knownScamPrefixMedium
+        : PHONE_WEIGHTS.knownScamPrefixLow;
     return {
       overridden: true,
-      score: PHONE_WEIGHTS.knownScamPrefix,
+      score: prefixScore,
       riskLevel: RISK_LEVELS.likelyScam,
       category: category || 'Phone Scam',
       explanation:

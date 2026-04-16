@@ -33,15 +33,11 @@ function getSource({
   prescreeningScore = 0,
   patternScore = 0,
 }) {
-  if (skipClaude) {
-    return SOURCES.prescreening;
-  }
-
   if (prescreeningScore + patternScore > HYBRID_MIN_CONTRIBUTION) {
     return SOURCES.hybrid;
   }
 
-  return SOURCES.claude;
+  return skipClaude ? SOURCES.prescreening : SOURCES.claude;
 }
 
 export function calculateConfidence({
@@ -50,17 +46,21 @@ export function calculateConfidence({
   claudeConfidence = 0,
   skipClaude = false,
   knownBadDomain = false,
-  knownScamPrefix = false,
+  knownScamPrefixLevel = 0,
   category = null,
   explanation = '',
 }) {
   if (skipClaude) {
-    const score = clampScore(prescreeningScore + patternScore);
+    const totalWeight = WEIGHTS.prescreening + WEIGHTS.patternScore;
+    const rawScore =
+      (prescreeningScore * WEIGHTS.prescreening + patternScore * WEIGHTS.patternScore) /
+      totalWeight;
+    const score = clampScore(rawScore);
 
     const override = applyOverrideLogic({
       score,
       knownBadDomain,
-      knownScamPrefix,
+      knownScamPrefixLevel,
       category,
       explanation,
     });
@@ -75,7 +75,7 @@ export function calculateConfidence({
       confidence,
       explanation: override.explanation || explanation || DEFAULT_EXPLANATIONS.safe,
       category: override.category || category,
-      source: SOURCES.prescreening,
+      source: getSource({ skipClaude, prescreeningScore, patternScore }),
     };
   }
 
@@ -89,7 +89,7 @@ export function calculateConfidence({
   const override = applyOverrideLogic({
     score: baseScore,
     knownBadDomain,
-    knownScamPrefix,
+    knownScamPrefixLevel,
     category,
     explanation,
   });

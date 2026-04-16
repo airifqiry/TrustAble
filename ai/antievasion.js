@@ -38,7 +38,7 @@ export function detectObfuscation(text = '') {
 
   if (characterSubstitutionRate >= 0.08) {
     score += OBFUSCATION_WEIGHTS.characterSubstitution;
-    matchedSignals.push('character_substitution_text');
+    matchedSignals.push('character_substitution');
   }
 
   return {

@@ -181,7 +181,7 @@ export async function runPreScreening({
       return (
         pattern.category === 'phishing' &&
         domain &&
-        normalizeText(pattern.patternText).includes(domain)
+        domain.includes(normalizeText(pattern.patternText))
       );
     })
   ) {
@@ -231,7 +231,7 @@ export async function runPreScreening({
     claudeConfidence: 0,
     skipClaude,
     knownBadDomain,
-    knownScamPrefix: false,
+    knownScamPrefixLevel: 0,
     category,
     explanation,
   });
