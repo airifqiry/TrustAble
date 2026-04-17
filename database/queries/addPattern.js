@@ -1,15 +1,18 @@
 import { pool } from '../db.js';
+import { embedText } from '../../ai/embedder.js';
 
 async function addPattern({ category, region = 'global', pattern_text, example, source = 'manual', confidence = 80, verified = false }) {
   if (!category || !pattern_text) {
     throw new Error('addPattern: category and pattern_text are required');
   }
 
+  const embedding = await embedText(pattern_text);
+
   const { rows } = await pool.query(
-    `INSERT INTO scam_patterns (category, region, pattern_text, example, source, confidence, verified)
-     VALUES ($1, $2, $3, $4, $5, $6, $7)
+    `INSERT INTO scam_patterns (category, region, pattern_text, example, source, confidence, verified, embedding)
+     VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
      RETURNING id, category, region, confidence, verified, created_at`,
-    [category, region, pattern_text, example || null, source, confidence, verified]
+    [category, region, pattern_text, example || null, source, confidence, verified, embedding]
   );
 
   return rows[0];
@@ -18,15 +21,18 @@ async function addPattern({ category, region = 'global', pattern_text, example, 
 async function bulkAddPatterns(patterns) {
   if (!patterns || patterns.length === 0) return 0;
 
+  const embeddings = await Promise.all(patterns.map((p) => embedText(p.pattern_text)));
+
   const client = await pool.connect();
   let insertedCount = 0;
 
   try {
     await client.query('BEGIN');
-    for (const p of patterns) {
+    for (let i = 0; i < patterns.length; i++) {
+      const p = patterns[i];
       const result = await client.query(
-        `INSERT INTO scam_patterns (category, region, pattern_text, example, source, confidence, verified)
-         VALUES ($1, $2, $3, $4, $5, $6, $7)
+        `INSERT INTO scam_patterns (category, region, pattern_text, example, source, confidence, verified, embedding)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
          ON CONFLICT DO NOTHING`,
         [
           p.category,
@@ -36,6 +42,7 @@ async function bulkAddPatterns(patterns) {
           p.source     || 'manual',
           p.confidence || 80,
           p.verified   || false,
+          embeddings[i],
         ]
       );
       insertedCount += result.rowCount;

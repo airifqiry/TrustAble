@@ -24,6 +24,8 @@ export const PRESCREENING_SKIP_THRESHOLD = 85;
 
 export const MAX_PATTERN_SCORE = 60;
 
+export const SIMILARITY_THRESHOLD = 0.40;
+
 export const HYBRID_MIN_CONTRIBUTION = 20;
 
 export const URL_WEIGHTS = {

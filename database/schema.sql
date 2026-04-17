@@ -10,6 +10,7 @@ CREATE TABLE scam_patterns (
   example      TEXT,
   source       VARCHAR(100) NOT NULL DEFAULT 'manual',
   confidence   INTEGER      NOT NULL DEFAULT 80 CHECK (confidence BETWEEN 0 AND 100),
+  embedding    REAL[],
   verified     BOOLEAN      NOT NULL DEFAULT FALSE,
   active       BOOLEAN      NOT NULL DEFAULT TRUE,
   created_at   TIMESTAMPTZ  NOT NULL DEFAULT NOW(),

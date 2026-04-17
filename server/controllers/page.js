@@ -3,6 +3,7 @@ import { initSSE, pipeStream } from '../streamHandler.js';
 
 import { runPreScreening }   from '../../ai/prescreening.js';
 import { analyzeWithClaude } from '../../ai/index.js';
+import { embedText }         from '../../ai/embedder.js';
 
 function detectPlatform(url = '') {
   const lower = url.toLowerCase();
@@ -27,6 +28,13 @@ export async function handlePage(req, res) {
   const platform = hintPlatform || detectPlatform(url);
   const region   = req.body.region || 'global';
 
+  let textEmbedding = null;
+  try {
+    textEmbedding = await embedText(text);
+  } catch (err) {
+    console.warn('[Page] Embedding failed, continuing without it:', err.message);
+  }
+
   let patterns = [];
   try {
     patterns = await fetchPatterns({ contentType: 'page', platform, region });
@@ -42,6 +50,7 @@ export async function handlePage(req, res) {
       contentType: 'page',
       platform,
       patterns,
+      textEmbedding,
     });
   } catch (err) {
     console.warn('[Page] Pre-screening failed, continuing to Claude:', err.message);

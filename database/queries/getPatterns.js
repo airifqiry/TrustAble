@@ -2,7 +2,7 @@ import { pool } from '../db.js';
 
 async function getPatterns(category, region = 'global', limit = 5) {
   const { rows } = await pool.query(
-    `SELECT pattern_text, example, confidence
+    `SELECT pattern_text, example, confidence, embedding
      FROM scam_patterns
      WHERE active = TRUE
        AND category = $1
@@ -22,7 +22,7 @@ async function getPatternsByCategories(categories, region = 'global', limitPerCa
   const limitParam   = `$${categories.length + 2}`;
 
   const { rows } = await pool.query(
-    `SELECT category, pattern_text, example, confidence
+    `SELECT category, pattern_text, example, confidence, embedding
      FROM (
        SELECT *,
               ROW_NUMBER() OVER (PARTITION BY category ORDER BY confidence DESC) AS rn

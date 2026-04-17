@@ -3,6 +3,7 @@ import { initSSE, pipeStream } from '../streamHandler.js';
 
 import { runPreScreening }   from '../../ai/prescreening.js';
 import { analyzeWithClaude } from '../../ai/index.js';
+import { embedText }         from '../../ai/embedder.js';
 
 export async function handleText(req, res) {
   const { content, region = 'global' } = req.body;
@@ -12,6 +13,13 @@ export async function handleText(req, res) {
       error:   'Invalid request',
       message: 'Please paste some content to analyze. The text is too short.',
     });
+  }
+
+  let textEmbedding = null;
+  try {
+    textEmbedding = await embedText(content);
+  } catch (err) {
+    console.warn('[Text] Embedding failed, continuing without it:', err.message);
   }
 
   let patterns = [];
@@ -27,6 +35,7 @@ export async function handleText(req, res) {
       text: content,
       contentType: 'message',
       patterns,
+      textEmbedding,
     });
   } catch (err) {
     console.warn('[Text] Pre-screening failed, continuing to Claude:', err.message);

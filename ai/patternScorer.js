@@ -1,64 +1,50 @@
 import {
   MAX_PATTERN_SCORE,
   PHONE_WEIGHTS,
+  SIMILARITY_THRESHOLD,
 } from './constants.js';
+import { embedText, chunkText, cosineSimilarity } from './embedder.js';
 
-function normalizeText(text = '') {
-  return text.toLowerCase().replace(/\s+/g, ' ').trim();
-}
+export async function scorePatternMatches({ text = '', textEmbedding = null, patterns = [] }) {
+  if (!patterns.length) return { score: 0, matchedPatterns: [] };
 
-function escapeRegExp(value = '') {
-  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-}
-
-function hasNonAscii(str) {
-  return /[^\u0000-\u007F]/.test(str);
-}
-
-function includesPattern(text, patternText) {
-  if (!text || !patternText) {
-    return false;
+  let chunkEmbeddings;
+  if (textEmbedding) {
+    chunkEmbeddings = [textEmbedding];
+  } else {
+    const chunks = chunkText(text);
+    chunkEmbeddings = await Promise.all(chunks.map(embedText));
   }
 
-  const normalizedText = normalizeText(text);
-  const normalizedPattern = normalizeText(patternText);
-
-  if (!normalizedPattern) {
-    return false;
-  }
-
-  if (hasNonAscii(normalizedPattern)) {
-    return normalizedText.includes(normalizedPattern);
-  }
-
-  const regex = new RegExp(`\\b${escapeRegExp(normalizedPattern)}\\b`, 'i');
-  return regex.test(normalizedText);
-}
-
-
-export function scorePatternMatches({ text = '', patterns = [] }) {
   const matchedPatterns = [];
   let score = 0;
 
   for (const pattern of patterns) {
-    if (!pattern?.pattern_text) {
+    if (!pattern?.pattern_text) continue;
+
+    if (!Array.isArray(pattern.embedding) || pattern.embedding.length === 0) {
+      console.warn(`[PatternScorer] No embedding for pattern "${pattern.pattern_text.slice(0, 50)}..." — skipping`);
       continue;
     }
 
-    if (!includesPattern(text, pattern.pattern_text)) {
-      continue;
+    let maxSimilarity = 0;
+    for (const chunkEmbedding of chunkEmbeddings) {
+      const sim = cosineSimilarity(chunkEmbedding, pattern.embedding);
+      if (sim > maxSimilarity) maxSimilarity = sim;
     }
 
-    const patternConfidence = Number(pattern.confidence) || 0;
-    const patternWeight = Math.round(patternConfidence * 0.3);
+    if (maxSimilarity >= SIMILARITY_THRESHOLD) {
+      const patternConfidence = Number(pattern.confidence) || 0;
+      const patternWeight = Math.round(patternConfidence * 0.3);
 
-    score += patternWeight;
-    matchedPatterns.push({
-      category: pattern.category || null,
-      patternText: pattern.pattern_text,
-      confidence: patternConfidence,
-      weight: patternWeight,
-    });
+      score += patternWeight;
+      matchedPatterns.push({
+        category: pattern.category || null,
+        patternText: pattern.pattern_text,
+        confidence: patternConfidence,
+        weight: patternWeight,
+      });
+    }
   }
 
   return {

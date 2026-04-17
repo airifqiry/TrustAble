@@ -114,6 +114,7 @@ export async function runPreScreening({
   contentType = '',
   platform = 'unknown',
   patterns = [],
+  textEmbedding = null,
 }) {
   const normalizedText = normalizeText(text);
   const domain = extractDomain(url);
@@ -169,8 +170,9 @@ export async function runPreScreening({
     matchedSignals.push('insecure_http');
   }
 
-  const patternResult = scorePatternMatches({
+  const patternResult = await scorePatternMatches({
     text: [normalizedText, domain].filter(Boolean).join(' '),
+    textEmbedding,
     patterns,
   });
 

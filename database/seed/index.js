@@ -5,6 +5,7 @@ import { seed as seedPhone } from './phone.js';
 import { seed as seedPhishing } from './phishing.js';
 import { seed as seedGeneral } from './general.js';
 import { seed as seedThresholds } from './thresholds.js';
+import { seed as seedEmbeddings } from './embedPatterns.js';
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ async function runAllSeeders() {
   await seedPhone();
   await seedPhishing();
   await seedGeneral();
+  await seedEmbeddings();
 
   console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
   console.log('  All seeders completed successfully ✓');
