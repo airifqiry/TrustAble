@@ -1,4 +1,3 @@
-const SHIELD_API_KEY = 'trustable123';
 const SERVER_URL = 'http://localhost:3000';
 
 function switchTab(i) {
@@ -169,10 +168,7 @@ async function runScan() {
 
     const response = await fetch(`${SERVER_URL}/analyze/page`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + SHIELD_API_KEY,
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ text: pageText, url, platform: '' }),
     });
 
@@ -289,10 +285,7 @@ async function runPaste() {
   try {
     const response = await fetch(`${SERVER_URL}/analyze/text`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + SHIELD_API_KEY,
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ content, region: '' }),
     });
 
@@ -384,10 +377,7 @@ async function runPhone() {
   try {
     const response = await fetch(`${SERVER_URL}/analyze/phone`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + SHIELD_API_KEY,
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ phone, transcript }),
     });
 

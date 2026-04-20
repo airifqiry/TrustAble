@@ -13,7 +13,15 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const app  = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(cors({ origin: '*', allowedHeaders: ['Content-Type', 'Authorization'] }));
+const ALLOWED_ORIGINS = /^(chrome-extension:\/\/|http:\/\/localhost(:\d+)?$)/;
+
+app.use(cors({
+  origin: (origin, cb) => {
+    if (!origin || ALLOWED_ORIGINS.test(origin)) return cb(null, true);
+    cb(new Error(`CORS: origin not allowed — ${origin}`));
+  },
+  allowedHeaders: ['Content-Type'],
+}));
 app.use(express.json({ limit: '50kb' }));
 app.use(express.static(join(__dirname, '../website')));
 
