@@ -1,9 +1,11 @@
 import { fetchPatterns }     from '../ragRetriever.js';
 import { initSSE, pipeStream } from '../streamHandler.js';
 
-import { runPreScreening }   from '../../ai/prescreening.js';
-import { analyzeWithClaude } from '../../ai/index.js';
-import { embedText }         from '../../ai/embedder.js';
+import { runPreScreening }     from '../../ai/prescreening.js';
+import { analyzeWithClaude }   from '../../ai/index.js';
+import { embedText }           from '../../ai/embedder.js';
+import { parseResponse }       from '../../ai/validator.js';
+import { calculateConfidence, mergeRiskLevel } from '../../ai/confidenceFormula.js';
 
 function detectPlatform(url = '') {
   const lower = url.toLowerCase();
@@ -61,6 +63,38 @@ export async function handlePage(req, res) {
     return res.json(preScreen.result);
   }
 
+  const prescreeningScore = preScreen.breakdown
+    ? preScreen.breakdown.url + preScreen.breakdown.domainAge + preScreen.breakdown.obfuscation + preScreen.breakdown.marketplace
+    : 0;
+  const patternScore    = preScreen.breakdown?.pattern ?? 0;
+  const knownBadDomain  = preScreen.matchedSignals?.includes('known_bad_domain') ?? false;
+
+  const hasSignals = prescreeningScore > 0 || patternScore > 0 || knownBadDomain;
+
+  const finalizer = (fullText) => {
+    const parsed = parseResponse(fullText);
+
+    if (!hasSignals) {
+      return { riskLevel: parsed.riskLevel, confidence: parsed.confidence, explanation: parsed.explanation, category: parsed.category };
+    }
+
+    const final = calculateConfidence({
+      prescreeningScore,
+      patternScore,
+      claudeConfidence: parsed.confidence,
+      skipClaude:       false,
+      knownBadDomain,
+      category:         parsed.category,
+      explanation:      parsed.explanation,
+    });
+    return {
+      riskLevel:   mergeRiskLevel(parsed.riskLevel, final.riskLevel),
+      confidence:  final.confidence,
+      explanation: parsed.explanation,
+      category:    parsed.category,
+    };
+  };
+
   initSSE(res);
 
   try {
@@ -73,7 +107,7 @@ export async function handlePage(req, res) {
       preScreenScore: preScreen.score,
     });
 
-    await pipeStream(stream, res, { preScreenScore: preScreen.score });
+    await pipeStream(stream, res, {}, finalizer);
   } catch (err) {
     console.error('[Page] Claude call failed:', err.message);
     res.write(`data: ${JSON.stringify({ type: 'error', message: 'Analysis failed. Please try again.' })}\n\n`);

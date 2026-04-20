@@ -201,13 +201,19 @@ async function runScan() {
           document.getElementById('scan-text').textContent = fullText;
           result.className = 'result warn active';
         },
-        (fullText) => {
-        
-          streamResult = parseClaudeText(fullText);
-          showResult('scan', {
-            ...streamResult,
-            text: streamResult.explanation,
-          });
+        (fullText, meta) => {
+          if (meta?.riskLevel) {
+            showResult('scan', {
+              risk:       riskLevelToClass(meta.riskLevel),
+              riskRaw:    meta.riskLevel,
+              category:   meta.category,
+              text:       meta.explanation,
+              confidence: meta.confidence,
+            });
+          } else {
+            streamResult = parseClaudeText(fullText);
+            showResult('scan', { ...streamResult, text: streamResult.explanation });
+          }
         },
         (errMsg) => {
           showResult('scan', { risk: 'uncertain', riskRaw: 'Uncertain', category: 'Error', text: errMsg, confidence: 0 });
@@ -314,9 +320,19 @@ async function runPaste() {
           document.getElementById('paste-text').textContent = fullText;
           result.className = 'result warn active';
         },
-        (fullText) => {
-          const parsed = parseClaudeText(fullText);
-          showResult('paste', { ...parsed, text: parsed.explanation });
+        (fullText, meta) => {
+          if (meta?.riskLevel) {
+            showResult('paste', {
+              risk:       riskLevelToClass(meta.riskLevel),
+              riskRaw:    meta.riskLevel,
+              category:   meta.category,
+              text:       meta.explanation,
+              confidence: meta.confidence,
+            });
+          } else {
+            const parsed = parseClaudeText(fullText);
+            showResult('paste', { ...parsed, text: parsed.explanation });
+          }
         },
         (errMsg) => {
           showResult('paste', { risk: 'uncertain', riskRaw: 'Uncertain', category: 'Error', text: errMsg, confidence: 0 });

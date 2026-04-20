@@ -40,6 +40,19 @@ function getSource({
   return skipClaude ? SOURCES.prescreening : SOURCES.claude;
 }
 
+const RISK_ORDER = {
+  'Appears Safe': 0,
+  'Uncertain':    1,
+  'Suspicious':   2,
+  'Likely Scam':  3,
+};
+
+export function mergeRiskLevel(claudeRiskLevel, formulaRiskLevel) {
+  const claudeRank  = RISK_ORDER[claudeRiskLevel]  ?? 1;
+  const formulaRank = RISK_ORDER[formulaRiskLevel] ?? 1;
+  return formulaRank > claudeRank ? formulaRiskLevel : claudeRiskLevel;
+}
+
 export function calculateConfidence({
   prescreeningScore = 0,
   patternScore = 0,

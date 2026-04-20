@@ -9,4 +9,5 @@ Pay special attention to:
 - Requests for sensitive personal information such as ID number, social security, or date of birth
 - Advance fee fraud promising large sums of money in exchange for upfront payment
 - Gift card payment demands which no legitimate organization ever makes
+- Unsolicited prize, lottery, or gambling offers (free spins, cash bonuses, winnings) — these are always Prize Fraud regardless of whether real casinos exist
 `;

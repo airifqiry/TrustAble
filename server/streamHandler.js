@@ -10,18 +10,21 @@ export function sendSSE(res, payload) {
   res.write(`data: ${JSON.stringify(payload)}\n\n`);
 }
 
-export async function pipeStream(stream, res, meta = {}) {
+export async function pipeStream(stream, res, meta = {}, finalizer = null) {
+  let fullText = '';
   try {
     for await (const event of stream) {
       if (
         event.type === 'content_block_delta' &&
         event.delta?.type === 'text_delta'
       ) {
+        fullText += event.delta.text;
         sendSSE(res, { type: 'token', text: event.delta.text });
       }
 
       if (event.type === 'message_stop') {
-        sendSSE(res, { type: 'done', meta });
+        const finalMeta = finalizer ? finalizer(fullText, meta) : meta;
+        sendSSE(res, { type: 'done', meta: finalMeta });
       }
     }
   } catch (err) {

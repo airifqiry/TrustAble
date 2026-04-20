@@ -8,6 +8,11 @@ const client = new Anthropic();
 
 const MAX_RETRIES = 2;
 
+function buildSystemPrompt() {
+  const date = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+  return `Today's date is ${date}. Use this to correctly interpret dates in analyzed content.\n\n${systemPrompt}`;
+}
+
 function buildPrompt({ contentType, platform, text, url, patterns, preScreenScore, phone, metadata, metadataScore }) {
   const template       = classifyAndGetTemplate(contentType, platform);
   const patternContext = injectPatterns(patterns);
@@ -71,7 +76,7 @@ export async function analyzeWithClaude({
   const stream = await client.messages.stream({
     model:      'claude-sonnet-4-6',
     max_tokens: 1024,
-    system:     systemPrompt,
+    system:     buildSystemPrompt(),
     messages:   [{ role: 'user', content: userMessage }],
   });
 
@@ -100,7 +105,7 @@ export async function analyzeWithClaudeSync({
       const response = await client.messages.create({
         model:      'claude-sonnet-4-6',
         max_tokens: 1024,
-        system:     systemPrompt,
+        system:     buildSystemPrompt(),
         messages:   [{ role: 'user', content: userMessage }],
       });
 
